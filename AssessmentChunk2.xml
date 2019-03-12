@@ -1,0 +1,45 @@
+<VoxelChunk>
+<Voxel x="0" y="0" z="0">2</Voxel>
+<Voxel x="0" y="0" z="1">2</Voxel>
+<Voxel x="0" y="0" z="2">2</Voxel>
+<Voxel x="0" y="0" z="3">2</Voxel>
+<Voxel x="0" y="0" z="4">2</Voxel>
+<Voxel x="0" y="0" z="5">2</Voxel>
+<Voxel x="0" y="0" z="6">2</Voxel>
+<Voxel x="0" y="0" z="7">2</Voxel>
+<Voxel x="0" y="0" z="8">2</Voxel>
+</VoxelChunk>
+
+<Dialogue>
+	<conversation id="start">
+		<text id="start">Hey, how's it going?</text>
+		<options>
+			<option>I'm doing okay.</option>
+			<option>I'm doing terribly.</option>
+			<option>I'm doing Great!</option>
+		</options>
+	</conversation>
+		
+	<conversation id = "option1">
+		<text>That's good to hear.</text>
+		<options>
+			<option>Bye.</option>
+		</options>
+	</conversation>
+	
+	<conversation id = "option2">
+		<text id="opt2">Aww, that's a shame</text>
+		<options>
+			<option>Bye.</option>
+		</options>
+	</conversation>
+	
+	<conversation id = "option3">
+		<text id="opt2">No need to brag about it.</text>
+			<options>
+				<option>Then why did you ask?</option>
+				<option>Bye.</option>
+			</options>
+	</conversation>
+	
+	</Dialogue>

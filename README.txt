@@ -1,0 +1,2 @@
+12/03/2019
+Created main menu containing two buttons and one input field. Buttons take the player to different scenes and the input field allows the player to input and load his own chunk of blocks from an XML file.

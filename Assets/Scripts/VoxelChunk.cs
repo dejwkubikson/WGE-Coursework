@@ -8,6 +8,7 @@ public class VoxelChunk : MonoBehaviour {
     int[,,] terrainArray;
     int chunkSize = 16;
     public List<Vector3> waypoints;
+	public string fileName = "";
 
     // delegate signature
     public delegate void EventBlockChangedWithType(int blockType);
@@ -189,7 +190,7 @@ public class VoxelChunk : MonoBehaviour {
         terrainArray = new int[chunkSize, chunkSize, chunkSize];
 
         voxelGenerator.Initialise();
-        InitialiseTerrain();
+        //InitialiseTerrain();
         //CreateTerrain();
         //voxelGenerator.UpdateMesh();
 
@@ -199,12 +200,12 @@ public class VoxelChunk : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(Input.GetKeyDown(KeyCode.F3))
+        if(Input.GetKeyDown(KeyCode.F1))
         {
             XMLVoxelFileWriter.SaveChunkToXMLFile(terrainArray, "VoxelChunk");
         }
 
-        if(Input.GetKeyDown(KeyCode.F4))
+        if(Input.GetKeyDown(KeyCode.F2))
         {
             // Get terrainArray from XML file
             terrainArray = XMLVoxelFileWriter.LoadChunkFromXMLFile(16, "VoxelChunk");

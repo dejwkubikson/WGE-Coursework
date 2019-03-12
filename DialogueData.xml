@@ -1,0 +1,52 @@
+<VoxelChunk>
+<Voxel x="0" y="0" z="0">2</Voxel>
+<Voxel x="0" y="0" z="1">2</Voxel>
+<Voxel x="0" y="0" z="2">2</Voxel>
+<Voxel x="0" y="0" z="3">2</Voxel>
+<Voxel x="0" y="0" z="4">2</Voxel>
+<Voxel x="0" y="0" z="5">2</Voxel>
+<Voxel x="0" y="0" z="6">2</Voxel>
+<Voxel x="0" y="0" z="7">2</Voxel>
+<Voxel x="0" y="0" z="8">2</Voxel>
+</VoxelChunk>
+
+<Dialogue>
+	<conversation id="start">
+		<text id="start">Hey, how's it going?</text>
+		<options>
+			<option next="option1">I'm doing okay.</option>
+			<option next="option2">I'm doing terribly.</option>
+			<option next="option3">I'm doing Great!</option>
+		</options>
+	</conversation>
+		
+	<conversation id = "option1">
+		<text>That's good to hear.</text>
+		<options>
+			<option next="end">Bye.</option>
+		</options>
+	</conversation>
+	
+	<conversation id = "option2">
+		<text>Aww, that's a shame</text>
+		<options>
+			<option next="end">Bye.</option>
+		</options>
+	</conversation>
+	
+	<conversation id = "option3">
+		<text>No need to brag about it.</text>
+			<options>
+				<option next="option3.1">Then why did you ask?</option>
+				<option next="end">Bye.</option>
+			</options>
+	</conversation>
+	
+	<conversation id = "option3.1">
+		<text>Sorry, I'm not in a great mood today.</text>
+			<options>
+				<option next="end">Bye.</option>
+			</options>
+	</conversation>
+	
+	</Dialogue>
