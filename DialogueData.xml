@@ -1,15 +1,3 @@
-<VoxelChunk>
-<Voxel x="0" y="0" z="0">2</Voxel>
-<Voxel x="0" y="0" z="1">2</Voxel>
-<Voxel x="0" y="0" z="2">2</Voxel>
-<Voxel x="0" y="0" z="3">2</Voxel>
-<Voxel x="0" y="0" z="4">2</Voxel>
-<Voxel x="0" y="0" z="5">2</Voxel>
-<Voxel x="0" y="0" z="6">2</Voxel>
-<Voxel x="0" y="0" z="7">2</Voxel>
-<Voxel x="0" y="0" z="8">2</Voxel>
-</VoxelChunk>
-
 <Dialogue>
 	<conversation id="start">
 		<text id="start">Hey, how's it going?</text>

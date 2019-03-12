@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
 
     public VoxelChunk voxelChunk;
+    public Text playerUI;
 
-    bool ActionOnBlock(out Vector3 v, float dist, bool destroy)
+    // used to know which block the user chose to place
+    private int chosenBlock = 1;
+
+    bool ActionOnBlock(out Vector3 v, float dist, bool destroy, int blockType)
     {
         v = new Vector3();
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
@@ -36,11 +41,22 @@ public class PlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-        if(Input.GetButtonDown("Fire1"))
+
+        if (Input.GetKey(KeyCode.Alpha1))
+            chosenBlock = 1;
+        if (Input.GetKey(KeyCode.Alpha2))
+            chosenBlock = 2;
+        if (Input.GetKey(KeyCode.Alpha3))
+            chosenBlock = 3;
+        if (Input.GetKey(KeyCode.Alpha4))
+            chosenBlock = 4;
+
+        playerUI.text = "Chosen block: " + chosenBlock;
+
+        if (Input.GetButtonDown("Fire1"))
         {
             Vector3 v;
-			if(ActionOnBlock(out v, 4, false))
+			if(ActionOnBlock(out v, 4, false, 0))
             {
                 voxelChunk.SetBlock(v, 0);
             }
@@ -49,10 +65,10 @@ public class PlayerScript : MonoBehaviour {
         if (Input.GetButtonDown("Fire2"))
         {
             Vector3 v;
-			if (ActionOnBlock(out v, 4, true))
+			if (ActionOnBlock(out v, 4, true, chosenBlock))
             {
                 Debug.Log(v);
-                voxelChunk.SetBlock(v, 1);
+                voxelChunk.SetBlock(v, chosenBlock);
             }
         }
 

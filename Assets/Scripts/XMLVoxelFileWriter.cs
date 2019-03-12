@@ -6,13 +6,13 @@ using System.Xml;
 public class XMLVoxelFileWriter{
 
     // Write a voxel chunk to XML file
-    public static void SaveChunkToXMLFile(int[, ,] voxelArray, string fileName)
+    /*public static void SaveChunkToXMLFile(int[, ,] voxelArray, string fileName)
     {
         XmlWriterSettings writerSettings = new XmlWriterSettings();
         writerSettings.Indent = true;
 
         // Create a write instance
-        XmlWriter xmlWriter = XmlWriter.Create(fileName + ".xml", writerSettings);
+        XmlWriter xmlWriter = XmlWriter.Create(fileName, writerSettings);
         // Write the beginning of the document
         xmlWriter.WriteStartDocument();
 
@@ -68,17 +68,18 @@ public class XMLVoxelFileWriter{
         // Close the document to save
         xmlWriter.Close();
     }
-    
+    */
+
     // Read a voxel chunk from XML file
     public static int[, ,] LoadChunkFromXMLFile(int size, string fileName)
     {
         int[, ,] voxelArray = new int[size, size, size];
 
         // Create ab XML reader with the file supplied
-        XmlReader xmlReader = XmlReader.Create(fileName + ".xml");
+        XmlReader xmlReader = XmlReader.Create(fileName);
 
         // Iterate through and read every line in the XML file
-        while(xmlReader.Read() && System.IO.File.Exists(fileName + ".xml"))
+        while(xmlReader.Read() && System.IO.File.Exists(fileName))
         {
             if(xmlReader.IsStartElement("Voxel"))
             {
@@ -93,29 +94,7 @@ public class XMLVoxelFileWriter{
 
                 voxelArray[x, y, z] = value;
             }
-
-            if(xmlReader.IsStartElement("PlayerData"))
-            {
-                // Retrieve x, y and z attributes and store as int
-                float xPos = float.Parse(xmlReader["xPos"]);
-                float yPos = float.Parse(xmlReader["yPos"]);
-                float zPos = float.Parse(xmlReader["zPos"]);
-                float xRot = float.Parse(xmlReader["xRot"]);
-                float yRot = float.Parse(xmlReader["yRot"]);
-                float zRot = float.Parse(xmlReader["zRot"]);
-
-                xmlReader.Read();
-
-                int value = int.Parse(xmlReader.Value);
-
-                GameObject player = GameObject.Find("FPSController").gameObject;
-                player.transform.position = new Vector3(xPos, yPos, zPos);
-                Debug.Log("x rot " + xRot + " y " + yRot + " z " + zRot);
-                player.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
-            }
-
         }
-
         return voxelArray;
     }
 }
