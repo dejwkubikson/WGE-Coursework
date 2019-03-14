@@ -3,3 +3,8 @@
 - Added loading voxel map from XML files.
 - Added sound effects that are different for each block.
 - Added a block that appears when one is destroyed. Still needs physics.
+
+13/03/2019
+- Created a 'trigger' that starts when the player is near the NPC.
+- Disabled player movement when dialogue starts.
+- Loading dialogue from XML file.
