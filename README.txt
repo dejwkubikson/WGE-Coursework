@@ -8,3 +8,7 @@
 - Created a 'trigger' that starts when the player is near the NPC.
 - Disabled player movement when dialogue starts.
 - Loading dialogue from XML file.
+
+19/03/2019
+- Instantiating a cube as a collectable
+- Added proper texture to the cube depending on the destroyed block

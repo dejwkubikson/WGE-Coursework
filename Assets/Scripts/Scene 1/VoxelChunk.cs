@@ -7,6 +7,7 @@ public class VoxelChunk : MonoBehaviour {
     VoxelGenerator voxelGenerator;
     int[,,] terrainArray;
     int chunkSize = 16;
+    public Material material;
 
     public List<AudioClip> soundEffects;
     public string fileName = ""; // XML file name to load chunk from
@@ -17,6 +18,54 @@ public class VoxelChunk : MonoBehaviour {
     
     // event instance for EventBlockChangedWithType()
     public static event EventBlockChangedWithType OnEventBlockChanged;
+
+    void CreateCollectableBlock(int x, int y, int z, int destroyedBlock)
+    {
+        // creating a cube
+        GameObject collectable = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // adding rigidbody, tag, attaching script and material to it
+        collectable.AddComponent<Rigidbody>();
+        collectable.gameObject.tag = "Collectable";
+        collectable.AddComponent<CollectableScript>();
+        collectable.GetComponent<Renderer>().material = material;
+        // scaling the texture
+        collectable.GetComponent<Renderer>().material.mainTextureScale = new Vector2(0.5f, 0.5f);
+       
+        // getting the texture offset from texCoords
+        string texture = "";
+        // getting the name of the texture from destroyed block
+        switch (destroyedBlock)
+        {
+            case 1:
+                texture = "Grass";
+                break;
+            case 2:
+                texture = "Dirt";
+                break;
+            case 3:
+                texture = "Sand";
+                break;
+            case 4:
+                texture = "Stone";
+                break;
+            default:
+                break;
+        }
+
+        Vector2 offsetVector = voxelGenerator.texNameCoordDictionary[texture];
+        collectable.GetComponent<Renderer>().material.mainTextureOffset = offsetVector;
+
+        //collectable.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0, 0); // grass
+        //collectable.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0.5f, 0); // stone
+        //collectable.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0, 0.5f); // dirt
+        //collectable.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0.5f, 0.5f); // sand
+
+        // scalling the block to about one third
+        collectable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+
+        // block will be placed in the middle
+        collectable.transform.position = new Vector3(x + 0.5f, y + 0.5f, z + 0.5f);
+    }
 
     void CreateTerrain()
     {
@@ -88,7 +137,6 @@ public class VoxelChunk : MonoBehaviour {
                             voxelGenerator.CreatePositiveZFace(x, y, z, tex);
                         }
 
-                        //voxelGenerator.CreateVoxel(x, y, z, tex);
                        // print("Create " + tex + " block.");
                     }
                 }
@@ -104,12 +152,11 @@ public class VoxelChunk : MonoBehaviour {
             // Instantiate a collectable block
             if (blockType == 0)
             {
-                // Saving which block was destroyed and which one should be created as collectible
+                // Saving which block was destroyed
                 int destroyedBlock = terrainArray[(int)index.x, (int)index.y, (int)index.z];
-
-                // Creating the block and placing it in the same position @@@@@@@@@@@@@@@@@@@@@@@@@
-                voxelGenerator.CreateVoxel2((int)index.x + 0.3f, (int)index.y, (int)index.z + 0.3f, destroyedBlock);
-            }
+                // Creating a collectable block
+                CreateCollectableBlock((int)index.x, (int)index.y, (int)index.z, destroyedBlock);
+          }
 
             // Change the block to the required type
             terrainArray[(int)index.x, (int)index.y, (int)index.z] = blockType;

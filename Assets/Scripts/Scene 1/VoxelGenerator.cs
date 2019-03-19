@@ -15,7 +15,7 @@ public class VoxelGenerator : MonoBehaviour {
     public List<Vector2> texCoords;
     public float texSize;
     public List<Vector3> cubeCenters;
-    Dictionary<string, Vector2> texNameCoordDictionary;
+    public Dictionary<string, Vector2> texNameCoordDictionary;
 
     private GameObject gameObject;
 

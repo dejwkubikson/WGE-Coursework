@@ -19,6 +19,10 @@ public class PlayerScript : MonoBehaviour {
 
         if (Physics.Raycast(ray, out hit, dist))
         {
+            // if the raycasted object is a collectable
+            if (hit.collider.gameObject.tag == "Collectable")
+                return false;
+
             // offset towards the centre of the neighbouring block
             if (destroy)
                 v = hit.point + hit.normal / 2;
