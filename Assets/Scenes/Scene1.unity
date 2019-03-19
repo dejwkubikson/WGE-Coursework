@@ -468,6 +468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbdd9bd3ee737e24f9a2b25a1ff92dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 63c24321d5e3e2041a13b4099f531e4b, type: 2}
   soundEffects:
   - {fileID: 8300000, guid: b2414faf7dab06746a029b4517b6f649, type: 3}
   - {fileID: 8300000, guid: eb426d4c60e8ca844b84cd229d18d199, type: 3}
@@ -988,6 +989,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalPosition.x
