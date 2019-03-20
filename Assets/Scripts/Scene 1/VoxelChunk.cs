@@ -21,19 +21,20 @@ public class VoxelChunk : MonoBehaviour {
 
     void CreateCollectableBlock(int x, int y, int z, int destroyedBlock)
     {
-        // creating a cube
+        // Creating a cube
         GameObject collectable = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        // adding rigidbody, tag, attaching script and material to it
+        // Adding rigidbody, tag, attaching script and material to it
         collectable.AddComponent<Rigidbody>();
         collectable.gameObject.tag = "Collectable";
         collectable.AddComponent<CollectableScript>();
         collectable.GetComponent<Renderer>().material = material;
         // scaling the texture
         collectable.GetComponent<Renderer>().material.mainTextureScale = new Vector2(0.5f, 0.5f);
-       
-        // getting the texture offset from texCoords
+        // Adding force to the collectible so that it kind of jumps
+        collectable.GetComponent<Rigidbody>().AddForce(collectable.transform.up * 100);
+
         string texture = "";
-        // getting the name of the texture from destroyed block
+        // Getting the name of the texture from destroyed block
         switch (destroyedBlock)
         {
             case 1:
@@ -52,6 +53,7 @@ public class VoxelChunk : MonoBehaviour {
                 break;
         }
 
+        // Getting the texture offset from texCoords and using it to display proper texture
         Vector2 offsetVector = voxelGenerator.texNameCoordDictionary[texture];
         collectable.GetComponent<Renderer>().material.mainTextureOffset = offsetVector;
 
@@ -60,11 +62,14 @@ public class VoxelChunk : MonoBehaviour {
         //collectable.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0, 0.5f); // dirt
         //collectable.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0.5f, 0.5f); // sand
 
-        // scalling the block to about one third
+        // Scalling the block to about one third
         collectable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
-        // block will be placed in the middle
+        // Block will be placed in the middle of the destroyed block
         collectable.transform.position = new Vector3(x + 0.5f, y + 0.5f, z + 0.5f);
+
+        // Lastly, making the variable blocktype the same as the destroyed block - used when picking the collectable up
+        collectable.GetComponent<CollectableScript>().blockType = destroyedBlock;
     }
 
     void CreateTerrain()

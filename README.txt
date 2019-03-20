@@ -10,5 +10,11 @@
 - Loading dialogue from XML file.
 
 19/03/2019
-- Instantiating a cube as a collectable
-- Added proper texture to the cube depending on the destroyed block
+- Instantiating a cube as a collectable.
+- Added proper texture to the cube depending on the destroyed block.
+
+20/03/2019
+- Added physics to the dropped block.
+- Added inventory.
+- Picked up blocks are added to inventory.
+- Droped block can be picked up now.
