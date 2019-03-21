@@ -15,6 +15,10 @@
 
 20/03/2019
 - Added physics to the dropped block.
-- Added inventory.
+- Added inventory 'prototype'.
 - Picked up blocks are added to inventory.
 - Droped block can be picked up now.
+
+21/03/2019
+- Inventory is properly displaying blocks.
+- Placing a block removes one from inventory.

@@ -77,7 +77,6 @@ public class VoxelGenerator : MonoBehaviour {
         }
     }
 
-    // Used for instantiating collectable blocks
     public void CreateVoxel(int x, int y, int z, int textureType)
     {
         string texture;

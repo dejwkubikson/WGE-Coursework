@@ -5,6 +5,7 @@ using UnityEngine;
 public class VoxelChunk : MonoBehaviour {
 
     VoxelGenerator voxelGenerator;
+    InventoryScript inventoryScript;
     int[,,] terrainArray;
     int chunkSize = 16;
     public Material material;
@@ -161,7 +162,12 @@ public class VoxelChunk : MonoBehaviour {
                 int destroyedBlock = terrainArray[(int)index.x, (int)index.y, (int)index.z];
                 // Creating a collectable block
                 CreateCollectableBlock((int)index.x, (int)index.y, (int)index.z, destroyedBlock);
-          }
+            }
+            else
+            {
+                // Update the inventory
+                inventoryScript.SubtractItemFromInventory(blockType);
+            }
 
             // Change the block to the required type
             terrainArray[(int)index.x, (int)index.y, (int)index.z] = blockType;
@@ -183,7 +189,9 @@ public class VoxelChunk : MonoBehaviour {
         blockList = new List<int>();
 
         voxelGenerator = GetComponent<VoxelGenerator>();
-       
+
+        inventoryScript = GameObject.Find("FPSController").GetComponent<InventoryScript>();
+
         // Instantiate the array with size based on chunksize;
         terrainArray = new int[chunkSize, chunkSize, chunkSize];
 
