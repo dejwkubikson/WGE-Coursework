@@ -7,9 +7,10 @@ public class PlayerScript : MonoBehaviour {
 
     public VoxelChunk voxelChunk;
     public Text playerUI;
+    InventoryScript inventoryScript;
 
     // used to know which block the user chose to place
-    private int chosenBlock = 1;
+    private int chosenBlock = 0;
 
     bool ActionOnBlock(out Vector3 v, float dist, bool destroy, int blockType)
     {
@@ -38,22 +39,49 @@ public class PlayerScript : MonoBehaviour {
         return false;
     }
 
+    void DrawCollectables()
+    {
+        // Find all Collectable objects
+        GameObject[] collectableObjects = GameObject.FindGameObjectsWithTag("Collectable");
+
+        foreach (GameObject collectableObject in collectableObjects)
+        {
+            // Making the object face the player
+            collectableObject.transform.LookAt(gameObject.transform);
+            // Adding force
+            collectableObject.GetComponent<Rigidbody>().AddForce(collectableObject.transform.forward * 10);
+        }
+    }
+
     // Use this for initialization
     void Start () {
-		
+        //InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
         if (Input.GetKey(KeyCode.Alpha1))
-            chosenBlock = 1;
+        {
+            InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
+            chosenBlock = inventoryScript.SelectFromInventory(1);
+        }
         if (Input.GetKey(KeyCode.Alpha2))
-            chosenBlock = 2;
+        {
+            InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
+            chosenBlock = inventoryScript.SelectFromInventory(2);
+        }
         if (Input.GetKey(KeyCode.Alpha3))
-            chosenBlock = 3;
+        {
+            InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
+            chosenBlock = inventoryScript.SelectFromInventory(3);
+        }
         if (Input.GetKey(KeyCode.Alpha4))
-            chosenBlock = 4;
+        {
+            InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
+            chosenBlock = inventoryScript.SelectFromInventory(4);
+        }
+
 
         playerUI.text = "Chosen block: " + chosenBlock;
 
@@ -75,6 +103,9 @@ public class PlayerScript : MonoBehaviour {
                 voxelChunk.SetBlock(v, chosenBlock);
             }
         }
+
+        if (Input.GetKey(KeyCode.E))
+            DrawCollectables();
 
 	}
 }

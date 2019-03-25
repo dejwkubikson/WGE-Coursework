@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class InventoryScript : MonoBehaviour
 {
-    public Dictionary<string, int> blockDictionary; // holds the name of the block (key) and the amount player has
+    public Dictionary<string, int> blockDictionary; // holds the name of the block (key) and the amount of blocks this type the player has
     public bool inInventoryLayer = false; // used to show up the inventory on the whole screen
 
     private Transform pos1;
@@ -108,14 +108,15 @@ public class InventoryScript : MonoBehaviour
         //Debug.Log("Added " + blockToAdd + ", amount now: " + blockDictionary[blockToAdd]);
     }
 
-    public void SubtractItemFromInventory(int blockType)
+    // Returns a boolean if it is possible to place a block of this type (enough blocks in inventory)
+    public bool SubtractItemFromInventory(int blockType)
     {
         // Converting the int block type to string
         string blockToSubtract = GetBlockType(blockType);
 
         // If there isn't enough blocks
-        //if (blockDictionary[blockToSubtract] < 1)
-          //  return;
+        if (blockDictionary[blockToSubtract] < 1)
+            return false;
 
         blockDictionary[blockToSubtract] -= 1;
 
@@ -131,6 +132,18 @@ public class InventoryScript : MonoBehaviour
         }
 
         UpdateInventory(posList[posToUpdate], posToUpdate);
+
+        // If this was the last block in the inventory
+        if(blockDictionary[blockToSubtract] == 0)
+        {
+            // Deactivating the image placeholder
+            posList[posToUpdate].GetChild(0).gameObject.SetActive(false);
+
+            // Deactivating the number of blocks text
+            posList[posToUpdate].GetChild(1).gameObject.SetActive(false);
+        }
+
+        return true;
     }
 
     void UpdateInventory(Transform posToUpdate, int indexToUpdate)
@@ -152,6 +165,51 @@ public class InventoryScript : MonoBehaviour
     void SearchByName()
     {
 
+    }
+
+    public int SelectFromInventory(int pos)
+    {
+        int blockType = 0;
+
+        pos -= 1;
+
+        // Changing inventory to 'unselected'
+        for (int i = 0; i < posList.Count; i++)
+        {
+            Image posImage = posList[i].GetComponent<Image>();
+            posImage.color = new Color32(125, 125, 125, 255);
+        }
+
+        // Highlight current selection in inventory
+        Image posSelectedImage = posList[pos].GetComponent<Image>();
+        posSelectedImage.color = new Color32(200, 200, 200, 255);
+
+        // Checking if there is any block in current selection (if the image placeholder is active)
+        if (posList[pos].GetChild(0).gameObject.activeSelf)
+        {
+            // Check what block type is under current selection
+            switch (posListType[pos])
+            {
+                case "Grass":
+                    blockType = 1;
+                    break;
+                case "Dirt":
+                    blockType = 2;
+                    break;
+                case "Sand":
+                    blockType = 3;
+                    break;
+                case "Stone":
+                    blockType = 4;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+            blockType = 0;
+
+        return blockType;
     }
 
     // Start is called before the first frame update

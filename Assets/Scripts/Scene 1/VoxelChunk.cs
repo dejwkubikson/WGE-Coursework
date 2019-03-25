@@ -29,7 +29,7 @@ public class VoxelChunk : MonoBehaviour {
         collectable.gameObject.tag = "Collectable";
         collectable.AddComponent<CollectableScript>();
         collectable.GetComponent<Renderer>().material = material;
-        // scaling the texture
+        // Scaling the texture
         collectable.GetComponent<Renderer>().material.mainTextureScale = new Vector2(0.5f, 0.5f);
         // Adding force to the collectible so that it kind of jumps
         collectable.GetComponent<Rigidbody>().AddForce(collectable.transform.up * 100);
@@ -166,7 +166,8 @@ public class VoxelChunk : MonoBehaviour {
             else
             {
                 // Update the inventory
-                inventoryScript.SubtractItemFromInventory(blockType);
+                if (!(inventoryScript.SubtractItemFromInventory(blockType)))
+                    return;
             }
 
             // Change the block to the required type
@@ -181,7 +182,6 @@ public class VoxelChunk : MonoBehaviour {
 
             OnEventBlockChanged(blockType);
         }
-
     }
 
     // Use this for initialization

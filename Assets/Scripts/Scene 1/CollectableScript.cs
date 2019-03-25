@@ -7,13 +7,27 @@ public class CollectableScript : MonoBehaviour
     GameObject player; // used to get current position
     GameObject camera; // the collectable moves to the camera so that it doesn't just move on the ground but goes to the player's face so that he clearly can see picking it up
     public int blockType; 
-    private bool moveTowards = false; // if the player is close enough to the collectable it should move towards him even if he starts to move away from it
+    public bool moveTowards = false; // if the player is close enough to the collectable it should move towards him even if he starts to move away from it
 
+    private AudioSource audioSource;
+    private bool coroutineNotPlayed = true;
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         camera = GameObject.FindGameObjectWithTag("MainCamera");
+        audioSource = player.GetComponent<AudioSource>();
+    }
+
+    IEnumerator PickUpAndDestroy()
+    {
+        coroutineNotPlayed = false;
+        InventoryScript inventory = player.GetComponent<InventoryScript>();
+        inventory.AddItemToInventory(blockType);
+        AudioClip pickUpSound = Resources.Load<AudioClip>("Sounds/pick_up_sound");
+        audioSource.PlayOneShot(pickUpSound);
+        yield return new WaitForSeconds(0.2f);
+        Destroy(gameObject);
     }
 
     // Update is called once per frame
@@ -30,12 +44,8 @@ public class CollectableScript : MonoBehaviour
             moveTowards = true;
 
             // if the object is very close then it is picked up
-            if(dist < 1.0f)
-            {
-                InventoryScript inventory = player.GetComponent<InventoryScript>();
-                inventory.AddItemToInventory(blockType);
-                Destroy(this.gameObject);
-            }
+            if (dist < 1.0f && coroutineNotPlayed)
+                StartCoroutine(PickUpAndDestroy());
         }
 
         if (moveTowards)

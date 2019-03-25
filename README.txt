@@ -22,3 +22,9 @@
 21/03/2019
 - Inventory is properly displaying blocks.
 - Placing a block removes one from inventory.
+
+25/03/2019
+- Player can draw blocks towards him when 'E' is pressed.
+- When the player runs out of certain block it's removed from the inventory (the place for the block will be empty now).
+- Blocks are now selected through the inventory only.
+- Selected inventory item is highlighted.
