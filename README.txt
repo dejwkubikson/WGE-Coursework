@@ -24,7 +24,11 @@
 - Placing a block removes one from inventory.
 
 25/03/2019
-- Player can draw blocks towards him when 'E' is pressed.
+- Player can draw blocks towards him when 'F' is pressed.
 - When the player runs out of certain block it's removed from the inventory (the place for the block will be empty now).
 - Blocks are now selected through the inventory only.
 - Selected inventory item is highlighted.
+
+28/03/2019
+- Added search by name function
+- Added controllers at the top of the screen that are shown for the first 10 seconds of the game

@@ -7,12 +7,14 @@ public class InventoryScript : MonoBehaviour
 {
     public Dictionary<string, int> blockDictionary; // holds the name of the block (key) and the amount of blocks this type the player has
     public bool inInventoryLayer = false; // used to show up the inventory on the whole screen
+    public GameObject inventoryLayer;
 
     private Transform pos1;
     private Transform pos2;
     private Transform pos3;
     private Transform pos4;
     private List<Transform> posList;
+    private bool closedInventoryLayer = false;
     private List<string> posListType; // This will be used as the index in inventory of a certain block type 
 
     void CreateInventory()
@@ -152,18 +154,106 @@ public class InventoryScript : MonoBehaviour
         posText.text = blockDictionary[posListType[indexToUpdate]].ToString();
     }
 
-    void SortByName()
+    void HighlightBlockInInventory(string block, bool highlight)
+    {
+        int posToModify = 0;
+
+        // Get the possition of that block type in the posListType
+        for (int i = 0; i < posListType.Count; i++)
+        {
+            if (posListType[i] == block)
+            {
+                posToModify = i;
+                break;
+            }
+        }
+
+        // Highlight or unhighlight block in inventory
+        if (highlight)
+        {
+            Image posSelectedImage = posList[posToModify].GetComponent<Image>();
+            posSelectedImage.color = new Color32(200, 200, 200, 255);
+        }
+        else
+        {
+            Image posImage = posList[posToModify].GetComponent<Image>();
+            posImage.color = new Color32(125, 125, 125, 255);
+        }
+    }
+
+    public void SearchByName(string name)
+    {
+        // even if the string is empty the function runs in order to unhighlight any previous highlighted blocks
+
+        // converting the string to upper case
+        name = name.ToUpper();
+
+        // looping through dictionary
+        foreach(string key in blockDictionary.Keys)
+        {
+            // converting the string key to uppercase
+            string upperKey = key.ToUpper();
+            // creating a variable that will hold the amount of similar characters
+            int similarChars = 0;
+
+            for (int i = 0; i < name.Length; i++)
+            {
+                // stopping loop if the string is bigger than the key 
+                if (name.Length > upperKey.Length)
+                    break;
+
+                // checking the written name with the name in the dictionary
+                if (name[i] == upperKey[i])
+                {
+                    similarChars++;
+                }
+            }
+
+            if(similarChars == name.Length && similarChars > 0)
+            {
+                //Debug.Log("This string is similar to " + key);
+
+                // Checking if the item is in inventory (at least one block) and highlighting it
+                if (blockDictionary[key] > 0)
+                    HighlightBlockInInventory(key, true);
+            }
+            else
+                HighlightBlockInInventory(key, false);
+        }
+    }
+
+    public void SortByNumberHighToLow()
     {
 
     }
 
-    void SortByNumber()
+    public void SortByNameHighToLow()
     {
 
     }
 
-    void SearchByName()
+    public void SortByNumberLowToHigh()
     {
+
+    }
+
+    public void SortByNameLowToHigh()
+    {
+
+    }
+
+    void OpenInventoryLayer()
+    {
+        closedInventoryLayer = false;
+        // enabling the inventory layer
+        inventoryLayer.SetActive(true);
+    }
+
+    void CloseInventoryLayer()
+    {
+        closedInventoryLayer = true;
+        // disabling the inventory layer
+        inventoryLayer.SetActive(false);
 
     }
 
@@ -173,7 +263,7 @@ public class InventoryScript : MonoBehaviour
 
         pos -= 1;
 
-        // Changing inventory to 'unselected'
+        // Changing the whole inventory to 'unselected'
         for (int i = 0; i < posList.Count; i++)
         {
             Image posImage = posList[i].GetComponent<Image>();
@@ -235,6 +325,9 @@ public class InventoryScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (inInventoryLayer)
+            OpenInventoryLayer();
+        else if (!(closedInventoryLayer))
+            CloseInventoryLayer();
     }
 }

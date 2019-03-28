@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson; // used to disable and enable FirstPersonController script
 
 public class PlayerScript : MonoBehaviour {
 
     public VoxelChunk voxelChunk;
-    public Text playerUI;
     InventoryScript inventoryScript;
 
     // used to know which block the user chose to place
@@ -60,30 +60,47 @@ public class PlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
 
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
             chosenBlock = inventoryScript.SelectFromInventory(1);
         }
         if (Input.GetKey(KeyCode.Alpha2))
         {
-            InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
             chosenBlock = inventoryScript.SelectFromInventory(2);
         }
         if (Input.GetKey(KeyCode.Alpha3))
         {
-            InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
             chosenBlock = inventoryScript.SelectFromInventory(3);
         }
         if (Input.GetKey(KeyCode.Alpha4))
         {
-            InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
             chosenBlock = inventoryScript.SelectFromInventory(4);
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
 
-        playerUI.text = "Chosen block: " + chosenBlock;
+            if (inventoryScript.inInventoryLayer)
+            {
+                inventoryScript.inInventoryLayer = false;
+                // activating first person controller script so that the player can move
+                gameObject.GetComponent<FirstPersonController>().enabled = true;
+                // making the cursor invisible and locking it
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                inventoryScript.inInventoryLayer = true;
+                // deactivating first person controller script so that the player doesn't move around
+                gameObject.GetComponent<FirstPersonController>().enabled = false;
+                // making the cursor visible and unlocking it
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
 
         if (Input.GetButtonDown("Fire1"))
         {
@@ -104,7 +121,7 @@ public class PlayerScript : MonoBehaviour {
             }
         }
 
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.F))
             DrawCollectables();
 
 	}
