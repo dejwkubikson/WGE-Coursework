@@ -32,3 +32,6 @@
 28/03/2019
 - Added search by name function
 - Added controllers at the top of the screen that are shown for the first 10 seconds of the game
+
+29/03/2019
+- Added merge sort fully working for future use

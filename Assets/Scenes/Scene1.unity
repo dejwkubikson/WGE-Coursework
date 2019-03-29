@@ -751,11 +751,11 @@ RectTransform:
   m_Children:
   - {fileID: 547355803}
   m_Father: {fileID: 1758860362}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -165, y: -335}
+  m_AnchoredPosition: {x: 165, y: -295}
   m_SizeDelta: {x: 110, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &432931685
@@ -1393,7 +1393,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1105350579}
-        m_MethodName: SortByNumberLowToHigh
+        m_MethodName: SortByNumberHighToLow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1796,11 +1796,11 @@ RectTransform:
   m_Children:
   - {fileID: 1564200493}
   m_Father: {fileID: 1758860362}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 165, y: -295}
+  m_AnchoredPosition: {x: -165, y: -335}
   m_SizeDelta: {x: 110, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &954368541
@@ -2874,7 +2874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1758860362
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2888,8 +2888,8 @@ RectTransform:
   m_Children:
   - {fileID: 1733922461}
   - {fileID: 1274822430}
-  - {fileID: 432931684}
   - {fileID: 954368540}
+  - {fileID: 432931684}
   - {fileID: 824776086}
   m_Father: {fileID: 1651726762}
   m_RootOrder: 2
