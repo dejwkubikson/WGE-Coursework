@@ -10,7 +10,7 @@ public class PlayerScript : MonoBehaviour {
     InventoryScript inventoryScript;
 
     // used to know which block the user chose to place
-    private int chosenBlock = 0;
+    public int chosenBlock = 0;
 
     bool ActionOnBlock(out Vector3 v, float dist, bool destroy, int blockType)
     {
@@ -79,28 +79,10 @@ public class PlayerScript : MonoBehaviour {
             chosenBlock = inventoryScript.SelectFromInventory(4);
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
 
-            if (inventoryScript.inInventoryLayer)
-            {
-                inventoryScript.inInventoryLayer = false;
-                // activating first person controller script so that the player can move
-                gameObject.GetComponent<FirstPersonController>().enabled = true;
-                // making the cursor invisible and locking it
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else
-            {
-                inventoryScript.inInventoryLayer = true;
-                // deactivating first person controller script so that the player doesn't move around
-                gameObject.GetComponent<FirstPersonController>().enabled = false;
-                // making the cursor visible and unlocking it
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
-        }
+        // else of the update shouldn't be used when in inventory layer
+        if (inventoryScript.inInventoryLayer)
+            return;
 
         if (Input.GetButtonDown("Fire1"))
         {

@@ -1991,6 +1991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voxelChunk: {fileID: 719368614}
+  chosenBlock: 0
 --- !u!114 &1105350579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2005,6 +2006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inInventoryLayer: 0
   inventoryLayer: {fileID: 1758860361}
+  inputField: {fileID: 1733922462}
 --- !u!1 &1247125657
 GameObject:
   m_ObjectHideFlags: 0

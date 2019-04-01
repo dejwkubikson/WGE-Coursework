@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson; // used to disable and enable FirstPersonController script
 
 public class InventoryScript : MonoBehaviour
 {
     public Dictionary<string, int> blockDictionary; // holds the name of the block (key) and the amount of blocks this type the player has
     public bool inInventoryLayer = false; // used to show up the inventory on the whole screen
     public GameObject inventoryLayer;
+    public InputField inputField;
 
     private Transform pos1;
     private Transform pos2;
@@ -55,6 +57,24 @@ public class InventoryScript : MonoBehaviour
         return blockToString;
     }
 
+    // Clears the whole inventory
+    void ClearInventory()
+    {
+        // Iterating through the pos game objects
+        for (int i = 0; i < posList.Count; i++)
+        {
+            // If the object is active disabling it and its components
+            if (posList[i].GetChild(0).gameObject.activeSelf)
+            {
+                posList[i].GetChild(0).gameObject.SetActive(false);
+                posList[i].GetChild(1).gameObject.SetActive(false);
+                Text posText = posList[i].GetChild(1).gameObject.GetComponent<Text>();
+                posText.text = "0";
+            }
+        }
+    }
+
+    // Adds a block to the inventory
     public void AddItemToInventory(int blockType)
     {
         // Converting the int block type to string
@@ -88,8 +108,27 @@ public class InventoryScript : MonoBehaviour
             Text posText = posList[choosePos].GetChild(1).gameObject.GetComponent<Text>();
             posText.text = "1";
 
-            // This is used as the index in inventory of a certain block type
-            posListType.Add(blockToAdd);
+            // Counting the amount of blocks the player has (at least 1)
+            int amountOfBlocks = 0;
+            foreach (int value in blockDictionary.Values)
+            {
+                if (value > 0)
+                    amountOfBlocks++;
+            }
+
+            // Checking if the posListType length is bigger than the amount of blocks that player holds
+            if (posListType.Count >= amountOfBlocks)
+            {
+                // Loking for first empty space that was reserved 
+                for(int i = 0; i < posListType.Count; i++)
+                {
+                    if (posListType[i] == "")
+                        posListType[i] = blockToAdd;
+                }
+            }
+            else
+                // This is used as the index in inventory of a certain block type
+                posListType.Add(blockToAdd);
         }
         else
         {
@@ -104,10 +143,10 @@ public class InventoryScript : MonoBehaviour
                 }
             }
 
-            UpdateInventory(posList[posToUpdate], posToUpdate);
+            UpdateInventory(posList[posToUpdate], blockToAdd);
         }
 
-        //Debug.Log("Added " + blockToAdd + ", amount now: " + blockDictionary[blockToAdd]);
+        // Debug.Log("Added " + blockToAdd + ", amount now: " + blockDictionary[blockToAdd]);
     }
 
     // Returns a boolean if it is possible to place a block of this type (enough blocks in inventory)
@@ -123,7 +162,7 @@ public class InventoryScript : MonoBehaviour
         blockDictionary[blockToSubtract] -= 1;
 
         int posToUpdate = 0;
-        // Get the possition of that block type in the posListType
+        // Get the position of that block type in the posListType
         for (int i = 0; i < posListType.Count; i++)
         {
             if (posListType[i] == blockToSubtract)
@@ -133,27 +172,35 @@ public class InventoryScript : MonoBehaviour
             }
         }
 
-        UpdateInventory(posList[posToUpdate], posToUpdate);
+        UpdateInventory(posList[posToUpdate], blockToSubtract);
 
         // If this was the last block in the inventory
         if (blockDictionary[blockToSubtract] == 0)
         {
             // Deactivating the image placeholder
             posList[posToUpdate].GetChild(0).gameObject.SetActive(false);
-
             // Deactivating the number of blocks text
             posList[posToUpdate].GetChild(1).gameObject.SetActive(false);
+
+            // Changing the block type to empty string to reserve this space for later use (there still may be blocks in inventory 'after' this one and there needs to be access to them)
+            for(int i = 0; i < posListType.Count; i++)
+            {
+                if (posListType[i] == blockToSubtract)
+                    posListType[i] = "";
+            }
         }
 
         return true;
     }
 
-    void UpdateInventory(Transform posToUpdate, int indexToUpdate)
+    // Updates inventory (text amount of blocks)
+    void UpdateInventory(Transform posToUpdate, string blockToUpdate)
     {
         Text posText = posToUpdate.GetChild(1).gameObject.GetComponent<Text>();
-        posText.text = blockDictionary[posListType[indexToUpdate]].ToString();
+        posText.text = blockDictionary[blockToUpdate].ToString();
     }
 
+    // Highlights block in inventory (used in search by name only)
     void HighlightBlockInInventory(string block, bool highlight)
     {
         int posToModify = 0;
@@ -181,28 +228,33 @@ public class InventoryScript : MonoBehaviour
         }
     }
 
+    // Searches through the inventory for certain block name
     public void SearchByName(string name)
     {
-        // even if the string is empty the function runs in order to unhighlight any previous highlighted blocks
-
-        // converting the string to upper case
+        // Even if the string is empty the function runs in order to unhighlight any previous highlighted blocks
+        // Converting the string to upper case to make it easier for the user to search through the inventory
         name = name.ToUpper();
 
-        // looping through dictionary
+        // If there is only one block highlighted, it will be selected for the user
+        int highlightedObjects = 0;
+        int highlightedPos = 0;
+
+        int dictionaryIndex = 0;
+        // Looping through dictionary
         foreach (string key in blockDictionary.Keys)
         {
-            // converting the string key to uppercase
+            // Converting the string key to uppercase
             string upperKey = key.ToUpper();
-            // creating a variable that will hold the amount of similar characters
+            // Creating a variable that will hold the amount of similar characters
             int similarChars = 0;
 
             for (int i = 0; i < name.Length; i++)
             {
-                // stopping loop if the string is bigger than the key 
+                // Stopping loop if the string is bigger than the key 
                 if (name.Length > upperKey.Length)
                     break;
 
-                // checking the written name with the name in the dictionary
+                // Checking the written name with the name in the dictionary
                 if (name[i] == upperKey[i])
                 {
                     similarChars++;
@@ -215,13 +267,26 @@ public class InventoryScript : MonoBehaviour
 
                 // Checking if the item is in inventory (at least one block) and highlighting it
                 if (blockDictionary[key] > 0)
+                {
                     HighlightBlockInInventory(key, true);
+                    highlightedObjects++;
+                    highlightedPos = dictionaryIndex;
+                }
             }
             else
                 HighlightBlockInInventory(key, false);
+
+            dictionaryIndex++;
+        }
+
+        // If only one object was highlighted throughout the name search it will be selected for the player
+        if (highlightedObjects == 1)
+        {
+            gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(highlightedPos);
         }
     }
 
+    // Divides the integer list
     private static List<int> MergeSort(List<int> toSort)
     {
         // If there is none or only one element the list is already sorted (a list of 1 element is considered sorted)
@@ -255,6 +320,7 @@ public class InventoryScript : MonoBehaviour
         return Merge(leftSide, rightSide);
     }
 
+    // Sorts and merges divided integer lists
     private static List<int> Merge(List<int> leftSide, List<int> rightSide)
     {
         // Creating a list that will contain the result of merging
@@ -291,32 +357,144 @@ public class InventoryScript : MonoBehaviour
         return sortedList;
     }
 
-    public void SortByNumberHighToLow()
+    // Divides the string list
+    private static List<string> MergeStringSort(List<string> toSort)
     {
-        List<int> toSort = new List<int>();
-        List<int> unsorted = new List<int>();
+        // If there is none or only one element the list is already sorted (a list of 1 element is considered sorted)
+        if (toSort.Count <= 1)
+            return toSort;
 
-        Debug.Log("Function SortByNumberHighToLow()");
-        /*
-        unsorted.Add(8);
-        unsorted.Add(10);
-        unsorted.Add(16);
-        unsorted.Add(2);
-        unsorted.Add(1);
-        
-        toSort = MergeSort(unsorted);
-         
-        for(int i = 0; i < unsorted.Count; i++)
+        // Creating left and right lists to divide the main list into sublists
+        List<string> leftSide = new List<string>();
+        List<string> rightSide = new List<string>();
+
+        // Finding the central point of the list to sort
+        int center = toSort.Count / 2;
+
+        // Dividing the unsorted lists and adding elements from 0 to central index to left list
+        for (int i = 0; i < center; i++)
         {
-            Debug.Log("Unsorted element no " + i + " is " + unsorted[i]);
+            leftSide.Add(toSort[i]);
         }
 
-        for (int i = 0; i < toSort.Count; i++)
+        // Adding elements from central to last index to right list
+        for (int i = center; i < toSort.Count; i++)
         {
-            Debug.Log("Sorted element no " + i + " is " + toSort[i]);
-        }*/
+            rightSide.Add(toSort[i]);
+        }
+
+        // Performing the action until there will be only one element in the list
+        leftSide = MergeStringSort(leftSide);
+        rightSide = MergeStringSort(rightSide);
+
+        // Merging the lists
+        return MergeString(leftSide, rightSide);
     }
 
+    // Sorts and merges divided integer lists
+    private static List<string> MergeString(List<string> leftSide, List<string> rightSide)
+    {
+        // Creating a list that will contain the result of merging
+        List<string> sortedList = new List<string>();
+
+        while (leftSide.Count > 0 || rightSide.Count > 0)
+        {
+            if (leftSide.Count > 0 && rightSide.Count > 0)
+            {
+                // Comparing first elements in both lists to see which is smaller. Adding the element to the result list and removing it from the list that contained the smaller value
+                if (string.Compare(leftSide[0], rightSide[0]) <= 0)
+                {
+                    sortedList.Add(leftSide[0]);
+                    leftSide.Remove(leftSide[0]);
+                }
+                else
+                {
+                    sortedList.Add(rightSide[0]);
+                    rightSide.Remove(rightSide[0]);
+                }
+            }
+            // If one of the lists is empty the element from the other one is the smaller one
+            else if (leftSide.Count > 0)
+            {
+                sortedList.Add(leftSide[0]);
+                leftSide.Remove(leftSide[0]);
+            }
+            else if (rightSide.Count > 0)
+            {
+                sortedList.Add(rightSide[0]);
+                rightSide.Remove(rightSide[0]);
+            }
+        }
+        return sortedList;
+    }
+
+    // Sorting by amount of blocks from high to low
+    public void SortByNumberHighToLow()
+    {
+        Debug.Log("Function SortByNumberHighToLow()");
+
+        // This list will contain the amount of blocks the user has
+        List<int> unsorted = new List<int>();
+
+        // This list will contain sorted amount of blocks the user has
+        List<int> sortedList = new List<int>();
+
+        // Assigning values to unsorted list from the dictionary, adding only values that are greater than 0
+        foreach (int value in blockDictionary.Values)
+        {
+            if(value > 0)
+                unsorted.Add(value);
+        }
+
+        sortedList = MergeSort(unsorted);
+        // Reverting the list as the sorting is done from low to high
+        sortedList.Reverse();
+
+        // Clearing posListyType and the inventory as they will be redone
+        posListType.Clear();
+        ClearInventory();
+
+        // Comparing the values with the dictionary assigning and changing the position of blocks in inventory
+        for (int i = 0; i < sortedList.Count; i++)
+        {
+            bool foundSameKey = false;
+            string blockType = "";
+
+            foreach (string key in blockDictionary.Keys)
+            {
+                // Checking if the key has been added to the posListType - eliminating issues when blocks have same value
+                for (int j = 0; j < posListType.Count; j++)
+                {
+                    if (posListType[j] == key)
+                    {
+                        // Debug.Log("The " + key + " is already in posListType");
+                        foundSameKey = true;
+                    }
+                    else
+                        foundSameKey = false;
+                }
+
+                // If the key has the same value as the value in the sorted list
+                if (blockDictionary[key].Equals(sortedList[i]) && sortedList[i] != 0 && !(foundSameKey))
+                {
+                    Debug.Log("Found " + key);
+                    blockType = key;
+                    break;
+                }
+            }
+
+            if (!(foundSameKey))
+            {
+                ChangePlaceInInventory(i, blockType);
+                posListType.Add(blockType);
+            }
+        }
+
+        // Selecting the first block in the sorted inventory
+        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(1);
+    }
+
+    // Sorting by amount of block from low to high
     public void SortByNumberLowToHigh()
     {
         Debug.Log("Function SortByNumberLowToHigh()");
@@ -324,31 +502,187 @@ public class InventoryScript : MonoBehaviour
         // This list will contain the amount of blocks the user has
         List<int> unsorted = new List<int>();
 
+        // This list will contain sorted amount of blocks the user has
         List<int> sortedList = new List<int>();
 
-        // Assigning values to unsorted list from the dictionary
+        // Assigning values to unsorted list from the dictionary, adding only values that are greater than 0
         foreach (int value in blockDictionary.Values)
         {
-            unsorted.Add(value);
+            if(value > 0)
+                unsorted.Add(value);
         }
 
         sortedList = MergeSort(unsorted);
 
-        // Comparing the values with the dictionary assigning and changing the position of blocks in inventory - no need to worry about blocks with the same amount
+        // Clearing posListyType and the inventory as they will be redone
+        posListType.Clear();
+        ClearInventory();
 
+        // Comparing the values with the dictionary assigning and changing the position of blocks in inventory
+        for (int i = 0; i < sortedList.Count; i++)
+        {
+            bool foundSameKey = false;
+            string blockType = "";
 
+            foreach (string key in blockDictionary.Keys)
+            {
+                // Checking if the key has been added to the posListType - eliminating issues when blocks have same value
+                for (int j = 0; j < posListType.Count; j++)
+                {
+                    if (posListType[j] == key)
+                    {
+                        // Debug.Log("The " + key + " is already in posListType");
+                        foundSameKey = true;
+                    }
+                    else
+                        foundSameKey = false;
+                }
+
+                 // If the key has the same value as the value in the sorted list
+                 if (blockDictionary[key].Equals(sortedList[i]) && !(foundSameKey))
+                 {
+                    Debug.Log("Found " + key);
+                    blockType = key;
+                    break;
+                 }
+            }
+
+             // If the value of the block is 0 then the blocks will be shifted to the left (a block with 0 amount shouldn't be shown in the inventory and shouldn't take space as well)
+             if (blockType != "" && !(foundSameKey))
+             {
+                 ChangePlaceInInventory(i, blockType);
+                 posListType.Add(blockType);
+             }
+        }
+
+        // Selecting the first block in the sorted inventory
+        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(1);
     }
 
+    // Sorting by block name from low to high
     public void SortByNameLowToHigh()
     {
         Debug.Log("Function SortByNameLowToHigh()");
+
+        // This list will contain the names of blocks the user has
+        List<string> unsorted = new List<string>();
+
+        // This list will contain sorted amount of blocks the user has
+        List<string> sortedList = new List<string>();
+
+        // Assigning values to unsorted list from the dictionary, adding only keys that have a value of at least 1 block
+        foreach (string key in blockDictionary.Keys)
+        {
+            // If the player has at lest one block of this kind
+            if(!(blockDictionary[key].Equals(0)))
+                unsorted.Add(key);
+        }
+
+        sortedList = MergeStringSort(unsorted);
+
+        // Clearing posListyType and the inventory as they will be redone
+        posListType.Clear();
+        ClearInventory();
+
+        // Comparing the keys with the dictionary, assigning and changing the position of blocks in inventory
+        for (int i = 0; i < sortedList.Count; i++)
+        {
+            string blockType = "";
+
+            foreach (string key in blockDictionary.Keys)
+            {
+                // If the key is found in the sorted list the same value as the value in the sorted list
+                if (sortedList[i] == key)
+                {
+                    Debug.Log("Found " + key);
+                    blockType = key;
+                    break;
+                }
+            }
+
+            if (blockType != "")
+            {
+                Debug.Log("Adding " + blockType + " to pos " + i);
+                ChangePlaceInInventory(i, blockType);
+                posListType.Add(blockType);
+            }
+            else
+                posListType.Add("");
+        }
+
+        for(int i = 0; i < posListType.Count; i++)
+        {
+            Debug.Log("BLOCK " + posListType[i] + " AT POS " + i);
+        }
+
+        // Selecting the first block in the sorted inventory
+        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(1);
     }
 
+    // Sorting by block name from high to low
     public void SortByNameHighToLow()
     {
         Debug.Log("Function SortByNameHighToLow()");
+
+        // This list will contain the names of blocks the user has
+        List<string> unsorted = new List<string>();
+
+        // This list will contain sorted amount of blocks the user has
+        List<string> sortedList = new List<string>();
+
+        // Assigning values to unsorted list from the dictionary, adding only keys that have a value of at least 1 block
+        foreach (string key in blockDictionary.Keys)
+        {
+            // If the player has at lest one block of this kind
+            if (!(blockDictionary[key].Equals(0)))
+                unsorted.Add(key);
+        }
+
+        sortedList = MergeStringSort(unsorted);
+        // Reverting the list as the sorting is done from low to high
+        sortedList.Reverse();
+
+        // Clearing posListyType and the inventory as they will be redone
+        posListType.Clear();
+        ClearInventory();
+
+        // Comparing the keys with the dictionary, assigning and changing the position of blocks in inventory
+        for (int i = 0; i < sortedList.Count; i++)
+        {
+            string blockType = "";
+
+            foreach (string key in blockDictionary.Keys)
+            {
+                // If the key is found in the sorted list the same value as the value in the sorted list
+                if (sortedList[i] == key)
+                {
+                    Debug.Log("Found " + key);
+                    blockType = key;
+                    break;
+                }
+            }
+
+            if (blockType != "")
+            {
+                Debug.Log("Adding " + blockType + " to pos " + i);
+                ChangePlaceInInventory(i, blockType);
+                posListType.Add(blockType);
+            }
+            else
+                posListType.Add("");
+        }
+
+        for (int i = 0; i < posListType.Count; i++)
+        {
+            Debug.Log("BLOCK " + posListType[i] + " AT POS " + i);
+        }
+
+        // Selecting the first block in the sorted inventory
+        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(1);
+
     }
 
+    // Opens the inventory layer with the buttons
     void OpenInventoryLayer()
     {
         closedInventoryLayer = false;
@@ -356,6 +690,7 @@ public class InventoryScript : MonoBehaviour
         inventoryLayer.SetActive(true);
     }
 
+    // Closes the inventory layer
     void CloseInventoryLayer()
     {
         closedInventoryLayer = true;
@@ -364,24 +699,19 @@ public class InventoryScript : MonoBehaviour
 
     }
 
-    void ChangePlaceInInventory(int changeTo, int blockTypeInt)
+    // Changes place of block in the inventory, used while sorting
+    void ChangePlaceInInventory(int changeTo, string blockType)
     {
-        string blockType = GetBlockType(blockTypeInt);
-        
-        // Activating the image placeholder and assigning a texture to it
         posList[changeTo].GetChild(0).gameObject.SetActive(true);
         RawImage posImage = posList[changeTo].GetChild(0).gameObject.GetComponent<RawImage>();
         posImage.texture = Resources.Load<Texture2D>("Textures/" + blockType + "BlockImage");
 
-        // Activating the number of blocks text and assigning a number to it
         posList[changeTo].GetChild(1).gameObject.SetActive(true);
         Text posText = posList[changeTo].GetChild(1).gameObject.GetComponent<Text>();
-        posText.text = "1";
-
-        // This is used as the index in inventory of a certain block type
-        //posListType.Add(blockToAdd);
+        posText.text = blockDictionary[blockType].ToString();
     }
 
+    // Select a block from the inventory
     public int SelectFromInventory(int pos)
     {
         int blockType = 0;
@@ -433,10 +763,10 @@ public class InventoryScript : MonoBehaviour
         CreateInventory();
 
         //Getting UI elements and storing them in list
-        Transform pos1 = GameObject.Find("Pos1").transform; // less 'hard code' than Transform pos1 = transform.GetChild(0); // first child element (pos1)
-        Transform pos2 = GameObject.Find("Pos2").transform; // second child element (pos2)
-        Transform pos3 = GameObject.Find("Pos3").transform; // third child element (pos3)
-        Transform pos4 = GameObject.Find("Pos4").transform; // fourth child element (pos4)
+        Transform pos1 = GameObject.Find("Pos1").transform; // first inventory element (Pos1)
+        Transform pos2 = GameObject.Find("Pos2").transform; // second inventory element (Pos2)
+        Transform pos3 = GameObject.Find("Pos3").transform; // third inventory element (Pos3)
+        Transform pos4 = GameObject.Find("Pos4").transform; // fourth inventory element (Pos4)
 
         posList = new List<Transform>();
         posList.Add(pos1);
@@ -450,6 +780,29 @@ public class InventoryScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            // If the player is in inventory layer and has pressed on the input field the inventory layer will not disappear when he types in 'E' - e.g when looking for a stone
+            if (inInventoryLayer && inputField.isFocused == false)
+            {
+                inInventoryLayer = false;
+                // Activating first person controller script so that the player can move
+                gameObject.GetComponent<FirstPersonController>().enabled = true;
+                // Making the cursor invisible and locking it
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                inInventoryLayer = true;
+                // Deactivating first person controller script so that the player doesn't move around
+                gameObject.GetComponent<FirstPersonController>().enabled = false;
+                // Making the cursor visible and unlocking it
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+
         if (inInventoryLayer)
             OpenInventoryLayer();
         else if (!(closedInventoryLayer))

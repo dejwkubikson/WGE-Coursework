@@ -180,7 +180,7 @@ public class VoxelChunk : MonoBehaviour {
             // Play sound from list. The sound effect list is in order with the block type: 0 - destroy sound, 1 - place grass block sound, 2 - place dirt block sound, 3 - place sand block sound, 4 - place stone block sound
             GetComponent<AudioSource>().PlayOneShot(soundEffects[blockType]);
 
-            OnEventBlockChanged(blockType);
+            //@@@@@@@@@@@@@@OnEventBlockChanged(blockType);
         }
     }
 

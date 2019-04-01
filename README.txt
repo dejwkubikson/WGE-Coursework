@@ -35,3 +35,11 @@
 
 29/03/2019
 - Added merge sort fully working for future use
+
+1/04/2019
+- Added sorting by number from low to high
+- Added sorting by number from high to low
+- Added sorting by name from low to high
+- Added sorting by name from high to low
+- Fixed some issues with function UpdateInventory() that didn't display the inventory properly
+- When the user is searching for a block by name the inventory layer will not disapear when he types in 'E'
