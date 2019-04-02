@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// This script is responsible for displaying the terrain of voxels. Should be attached to an empty game object.
 public class VoxelChunk : MonoBehaviour {
 
     VoxelGenerator voxelGenerator;
@@ -75,20 +76,20 @@ public class VoxelChunk : MonoBehaviour {
 
     void CreateTerrain()
     {
-        // iterate horizontally on width
+        // Iterate horizontally on width
         for(int x = 0; x < terrainArray.GetLength(0); x++)
         {
-            // iterate vertically 
+            // Iterate vertically 
             for(int y = 0; y < terrainArray.GetLength(1); y++)
             {
-                // iterate per voxel horizontally on depth
+                // Iterate per voxel horizontally on depth
                 for (int z = 0; z < terrainArray.GetLength(2); z++)
                 {
-                    // if the voxel is not empty
+                    // If the voxel is not empty
                     if (terrainArray[x, y, z] != 0)
                     {
                         string tex;
-                        // set texture name by value
+                        // Set texture name by value
                         switch (terrainArray[x, y, z])
                         {
                             case 1:
@@ -108,42 +109,40 @@ public class VoxelChunk : MonoBehaviour {
                                 break;
                         }
 
-                        // check if we need to draw the negative x face
+                        // Check if we need to draw the negative x face
                         if (x == 0 || terrainArray[x - 1, y, z] == 0)
                         {
                             voxelGenerator.CreateNegativeXFace(x, y, z, tex);
                         }
-                        // check if we need to draw the positive x face
+                        // Check if we need to draw the positive x face
                         if (x == terrainArray.GetLength(0) - 1 || terrainArray[x + 1, y, z] == 0)
                         {
                             voxelGenerator.CreatePositiveXFace(x, y, z, tex);
                         }
 
-                        // check if we need to draw the negative y face
+                        // Check if we need to draw the negative y face
                         if (y == 0 || terrainArray[x, y - 1, z] == 0)
                         {
                             voxelGenerator.CreateNegativeYFace(x, y, z, tex);
                         }
 
-                        // check if we need to draw the positive y face
+                        // Check if we need to draw the positive y face
                         if (y == terrainArray.GetLength(1) - 1 || terrainArray[x, y + 1, z] == 0)
                         {
                             voxelGenerator.CreatePositiveYFace(x, y, z, tex);
                         }
 
-                        // check if we need to draw the negative z face
+                        // Check if we need to draw the negative z face
                         if (z == 0 || terrainArray[x, y, z - 1] == 0)
                         {
                             voxelGenerator.CreateNegativeZFace(x, y, z, tex);
                         }
 
-                        // check if we need to draw the positive z face
+                        // Check if we need to draw the positive z face
                         if (z == terrainArray.GetLength(2) - 1 || terrainArray[x, y, z + 1] == 0)
                         {
                             voxelGenerator.CreatePositiveZFace(x, y, z, tex);
                         }
-
-                       // print("Create " + tex + " block.");
                     }
                 }
             }
@@ -186,10 +185,7 @@ public class VoxelChunk : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        blockList = new List<int>();
-
         voxelGenerator = GetComponent<VoxelGenerator>();
-
         inventoryScript = GameObject.Find("FPSController").GetComponent<InventoryScript>();
 
         // Instantiate the array with size based on chunksize;
@@ -197,7 +193,16 @@ public class VoxelChunk : MonoBehaviour {
 
         voxelGenerator.Initialise();
 
-        fileName = "AssessmentChunk2.xml"; // GET RID OF LATER!!!! @@@@@@@@@@@@@@@@@@@@@@@@@
+        fileName = "AssessmentChunk2.xml";
+
+        // Getting file name from GameDataScript
+        //GameDataScript gameDataScript = GameObject.Find("GameDataObject").GetComponent<GameDataScript>();
+        /*if (gameDataScript != null)
+        {
+            fileName = gameDataScript.fileName;
+        }
+        else
+            fileName = "AssessmentChunk1.xml";*/
 
         // Get terrainArray from XML file
         terrainArray = XMLVoxelFileWriter.LoadChunkFromXMLFile(chunkSize, fileName);
@@ -209,8 +214,4 @@ public class VoxelChunk : MonoBehaviour {
         voxelGenerator.UpdateMesh();
     }
 	
-	// Update is called once per frame
-	void Update () {
-
-    }
 }

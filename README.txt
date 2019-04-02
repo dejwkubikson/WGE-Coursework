@@ -43,3 +43,8 @@
 - Added sorting by name from high to low
 - Fixed some issues with function UpdateInventory() that didn't display the inventory properly
 - When the user is searching for a block by name the inventory layer will not disapear when he types in 'E'
+
+2/04/2019
+- Added loading from file by user input in the main menu
+- Scene 1 is finished
+- Started working on loading the dialogue - it can properly go through one whole conversation.

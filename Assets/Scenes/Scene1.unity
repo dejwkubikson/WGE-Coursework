@@ -1634,7 +1634,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -62.5}
-  m_SizeDelta: {x: 320, y: 125}
+  m_SizeDelta: {x: 260, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &941261874
 MonoBehaviour:
@@ -1682,7 +1682,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 941261872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b019d0b9257f3b14c8707be734c41027, type: 3}
+  m_Script: {fileID: 11500000, guid: 912dfb55d085a4c49bb8774c9ee848c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &952523393
@@ -2807,7 +2807,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -62.5}
-  m_SizeDelta: {x: 300, y: 125}
+  m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1736837889
 MonoBehaviour:
@@ -2831,10 +2831,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 17
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -2845,6 +2845,8 @@ MonoBehaviour:
   m_Text: 'W, A, S, D - move
 
     F - draw collectable blocks
+
+    E - open / close inventory
 
     LMB - destroy block
 
@@ -2876,7 +2878,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1758860362
 RectTransform:
   m_ObjectHideFlags: 0

@@ -8,18 +8,22 @@ public class DialogueScript : MonoBehaviour
     public string dialogueFileName = "DialogueData.xml";
     public bool dialogueStarted = false;
     public bool dialogueEnded = false;
-
-
-    private string speaker = "";
+    public Dictionary<string, string> options;
 
     public void StartDialogue()
     {
         dialogueStarted = true;
 
-        LoadDialogueFromXMLFile(dialogueFileName);
+        LoadDialogueFromXMLFile(dialogueFileName, "start");
     }
 
-    public void LoadDialogueFromXMLFile(string fileName)
+    public void EndDialogue()
+    {
+        dialogueStarted = false;
+        dialogueEnded = true;
+    }
+
+    public void LoadDialogueFromXMLFile(string fileName, string conversationID)
     {
         // Checking if the file has XML ending
         if (!(fileName.Contains(".xml")))
@@ -32,16 +36,69 @@ public class DialogueScript : MonoBehaviour
             return;
         }
 
+        Debug.Log("Loaded dialogue, looking for " + conversationID);
+
         // Create an XML reader with the file supllied
         XmlReader xmlReader = XmlReader.Create(fileName);
 
         while(xmlReader.Read())
         {
-            // Getting the name of the speaker
-            if(xmlReader.IsStartElement("speaker"))
+            // Getting the id of the conversation
+            if(xmlReader.IsStartElement("conversation"))
             {
-                speaker = xmlReader.Value;
-                Debug.Log("Speaker name: " + speaker);
+                string id = xmlReader["id"];
+                //Debug.Log("Conversation ID is " + id);
+                // Searching for the right conversation id
+                if(id == conversationID)
+                {
+                    // Getting another node
+                    xmlReader.Read();
+                    // <text>
+                    // Getting text and it's speaker
+                    xmlReader.ReadToNextSibling("text");
+                    string speaker = xmlReader["speaker"];
+                    xmlReader.Read();
+                    // Assigning the text to a variable
+                    string text = xmlReader.Value;
+                    // </text>
+                    Debug.Log("Speaker name: " + speaker + ", text: " + text);
+                    // Moving to another node
+                    xmlReader.Read();
+                    // <options>
+                    xmlReader.ReadToNextSibling("options");
+                    xmlReader.Read();
+
+                    // Reading through the options
+                    // <option>
+                    int numberOfOptions = 0;
+                    
+                    // While there are <option> nodes in the options
+                    while (xmlReader.ReadToNextSibling("option"))
+                    {
+                        numberOfOptions++;
+
+                        string nextOption = xmlReader["next"];
+                        string textOption = xmlReader.ReadElementContentAsString();
+
+                        Debug.Log("Nxt option: " + nextOption + ", text: " + textOption);
+                        // Adding the id of the option and text to the dictionary
+                        //options.Add()
+                    }
+
+                    // </option>
+                    Debug.Log("number of options" + numberOfOptions);
+
+                    // </options>
+
+                    // Getting another line 
+
+
+                    
+
+                }
+
+                //speaker = xmlReader.Value;
+                //Debug.Log("Speaker name: " + speaker);
             }
 
         }
@@ -75,7 +132,7 @@ public class DialogueScript : MonoBehaviour
     {
         int[,,] voxelArray = new int[size, size, size];
 
-        // Create ab XML reader with the file supplied
+        // Create an XML reader with the file supplied
         XmlReader xmlReader = XmlReader.Create(fileName);
 
         // Iterate through and read every line in the XML file
@@ -101,7 +158,7 @@ public class DialogueScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        options = new Dictionary<string, string>();
     }
 
     // Update is called once per frame

@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// This script is attached to a collectable. It plays sounds, destroys when is collected and can be drawn towards the player.
 public class CollectableScript : MonoBehaviour
 {
-    GameObject player; // used to get current position
-    GameObject camera; // the collectable moves to the camera so that it doesn't just move on the ground but goes to the player's face so that he clearly can see picking it up
+    GameObject player; // Used to get current position
+    GameObject camera; // The collectable moves to the camera so that it doesn't just move on the ground but goes to the player's face so that he clearly can see picking it up
     public int blockType; 
     public bool moveTowards = false; // if the player is close enough to the collectable it should move towards him even if he starts to move away from it
 
     private AudioSource audioSource;
     private bool coroutineNotPlayed = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +45,7 @@ public class CollectableScript : MonoBehaviour
         {
             moveTowards = true;
 
-            // if the object is very close then it is picked up
+            // If the object is very close then it is picked up
             if (dist < 1.0f && coroutineNotPlayed)
                 StartCoroutine(PickUpAndDestroy());
         }

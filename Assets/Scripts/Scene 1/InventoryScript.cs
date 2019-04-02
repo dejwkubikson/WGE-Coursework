@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityStandardAssets.Characters.FirstPerson; // used to disable and enable FirstPersonController script
+using UnityStandardAssets.Characters.FirstPerson; // Used to disable and enable FirstPersonController script
 
+// This script should be attached to the player. It performs all the actions on the inventory, from sorting, searching to updating the display of the blocks.
 public class InventoryScript : MonoBehaviour
 {
-    public Dictionary<string, int> blockDictionary; // holds the name of the block (key) and the amount of blocks this type the player has
-    public bool inInventoryLayer = false; // used to show up the inventory on the whole screen
+    public Dictionary<string, int> blockDictionary; // Holds the name of the block (key) and the amount of blocks this type the player has
+    public bool inInventoryLayer = false; // Used to show up the inventory on the whole screen
     public GameObject inventoryLayer;
-    public InputField inputField;
+    public InputField inputField; // Search by name input field
 
     private Transform pos1;
     private Transform pos2;

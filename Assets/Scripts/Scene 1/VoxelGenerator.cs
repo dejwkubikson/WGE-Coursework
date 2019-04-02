@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 
+// This script is responsible for 'drawing' single blocks and texturing them for the voxelChunk script.
 public class VoxelGenerator : MonoBehaviour {
 
     Mesh mesh;
@@ -16,8 +17,6 @@ public class VoxelGenerator : MonoBehaviour {
     public float texSize;
     public List<Vector3> cubeCenters;
     public Dictionary<string, Vector2> texNameCoordDictionary;
-
-    private GameObject gameObject;
 
     int numQuads = 0;
 
@@ -49,8 +48,6 @@ public class VoxelGenerator : MonoBehaviour {
         // Create a collision mesh
         meshCollider.sharedMesh = null;
         meshCollider.sharedMesh = mesh;
-
-        
 
         ClearPreviousData();
     }
@@ -100,14 +97,14 @@ public class VoxelGenerator : MonoBehaviour {
                 break;
         }
 
-        CreateNegativeZFace2(x, y, z, texture);
-        CreatePositiveZFace2(x, y, z, texture);
+        CreateNegativeZFace(x, y, z, texture);
+        CreatePositiveZFace(x, y, z, texture);
 
-        CreateNegativeXFace2(x, y, z, texture);
-        CreatePositiveXFace2(x, y, z, texture);
+        CreateNegativeXFace(x, y, z, texture);
+        CreatePositiveXFace(x, y, z, texture);
 
-        CreateNegativeYFace2(x, y, z, texture);
-        CreatePositiveYFace2(x, y, z, texture);
+        CreateNegativeYFace(x, y, z, texture);
+        CreatePositiveYFace(x, y, z, texture);
     }
 
     public void CreateNegativeZFace(int x, int y, int z, string texture)
@@ -181,116 +178,6 @@ public class VoxelGenerator : MonoBehaviour {
         AddTriangleIndices();
         AddUVCoords(uvCoords);
     }
-
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-    // Used for instantiating collectable blocks
-    public void CreateVoxel2(float x, float y, float z, int textureType)
-    {
-        string texture;
-        // Setting texture name by value
-        switch (textureType)
-        {
-            case 1:
-                texture = "Grass";
-                break;
-            case 2:
-                texture = "Dirt";
-                break;
-            case 3:
-                texture = "Sand";
-                break;
-            case 4:
-                texture = "Stone";
-                break;
-            default:
-                texture = "Grass";
-                break;
-        }
-
-        CreateNegativeZFace2(x, y, z, texture);
-        CreatePositiveZFace2(x, y, z, texture);
-
-        CreateNegativeXFace2(x, y, z, texture);
-        CreatePositiveXFace2(x, y, z, texture);
-
-        CreateNegativeYFace2(x, y, z, texture);
-        CreatePositiveYFace2(x, y, z, texture);
-    }
-
-    public void CreateNegativeZFace2(float x, float y, float z, string texture)
-    {
-        Vector2 uvCoords = texNameCoordDictionary[texture];
-
-        vertexList.Add(new Vector3(x, y + 0.3f, z));
-        vertexList.Add(new Vector3(x + 0.3f, y + 0.3f, z));
-        vertexList.Add(new Vector3(x + 0.3f, y, z));
-        vertexList.Add(new Vector3(x, y, z));
-        AddTriangleIndices();
-        AddUVCoords(uvCoords);
-    }
-
-    public void CreatePositiveZFace2(float x, float y, float z, string texture)
-    {
-        Vector2 uvCoords = texNameCoordDictionary[texture];
-
-        vertexList.Add(new Vector3(x + 0.3f, y, z + 0.3f));
-        vertexList.Add(new Vector3(x + 0.3f, y + 0.3f, z + 0.3f));
-        vertexList.Add(new Vector3(x, y + 0.3f, z + 0.3f));
-        vertexList.Add(new Vector3(x, y, z + 0.3f));
-        AddTriangleIndices();
-        AddUVCoords(uvCoords);
-    }
-
-    public void CreateNegativeXFace2(float x, float y, float z, string texture)
-    {
-        Vector2 uvCoords = texNameCoordDictionary[texture];
-
-        vertexList.Add(new Vector3(x, y, z + 0.3f));
-        vertexList.Add(new Vector3(x, y + 0.3f, z + 0.3f));
-        vertexList.Add(new Vector3(x, y + 0.3f, z));
-        vertexList.Add(new Vector3(x, y, z));
-        AddTriangleIndices();
-        AddUVCoords(uvCoords);
-    }
-
-    public void CreatePositiveXFace2(float x, float y, float z, string texture)
-    {
-        Vector2 uvCoords = texNameCoordDictionary[texture];
-
-        vertexList.Add(new Vector3(x + 0.3f, y, z));
-        vertexList.Add(new Vector3(x + 0.3f, y + 0.3f, z));
-        vertexList.Add(new Vector3(x + 0.3f, y + 0.3f, z + 0.3f));
-        vertexList.Add(new Vector3(x + 0.3f, y, z + 0.3f));
-        AddTriangleIndices();
-        AddUVCoords(uvCoords);
-    }
-
-    public void CreateNegativeYFace2(float x, float y, float z, string texture)
-    {
-        Vector2 uvCoords = texNameCoordDictionary[texture];
-
-        vertexList.Add(new Vector3(x, y, z));
-        vertexList.Add(new Vector3(x + 0.3f, y, z));
-        vertexList.Add(new Vector3(x + 0.3f, y, z + 0.3f));
-        vertexList.Add(new Vector3(x, y, z + 0.3f));
-        AddTriangleIndices();
-        AddUVCoords(uvCoords);
-    }
-
-    public void CreatePositiveYFace2(float x, float y, float z, string texture)
-    {
-        Vector2 uvCoords = texNameCoordDictionary[texture];
-
-        vertexList.Add(new Vector3(x, y + 0.3f, z + 0.3f));
-        vertexList.Add(new Vector3(x + 0.3f, y + 0.3f, z + 0.3f));
-        vertexList.Add(new Vector3(x + 0.3f, y + 0.3f, z));
-        vertexList.Add(new Vector3(x, y + 0.3f, z));
-        AddTriangleIndices();
-        AddUVCoords(uvCoords);
-    }
-
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     void AddTriangleIndices()
     {

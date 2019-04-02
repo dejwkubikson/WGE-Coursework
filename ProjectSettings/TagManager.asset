@@ -7,6 +7,7 @@ TagManager:
   - Collectable
   - InventoryLayer
   - Inventory
+  - Terrain
   layers:
   - Default
   - TransparentFX

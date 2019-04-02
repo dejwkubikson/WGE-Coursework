@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityStandardAssets.Characters.FirstPerson; // used to disable and enable FirstPersonController script
 
+// This script should be attached to the player. It allows the player to perform actions on blocks, draw collectables and choose blocks from inventory.
 public class PlayerScript : MonoBehaviour {
 
     public VoxelChunk voxelChunk;
     InventoryScript inventoryScript;
 
-    // used to know which block the user chose to place
+    // Used to know which block the user chose to use
     public int chosenBlock = 0;
 
     bool ActionOnBlock(out Vector3 v, float dist, bool destroy, int blockType)
@@ -20,17 +20,17 @@ public class PlayerScript : MonoBehaviour {
 
         if (Physics.Raycast(ray, out hit, dist))
         {
-            // if the raycasted object is a collectable
+            // If the raycasted object is a collectable
             if (hit.collider.gameObject.tag == "Collectable")
                 return false;
 
-            // offset towards the centre of the neighbouring block
+            // Offset towards the centre of the neighbouring block
             if (destroy)
                 v = hit.point + hit.normal / 2;
             else
                 v = hit.point - hit.normal / 2;
 
-            // round down to get the index of the empty;
+            // Round down to get the index of the empty;
             v.x = Mathf.Floor(v.x);
             v.y = Mathf.Floor(v.y);
             v.z = Mathf.Floor(v.z);
@@ -80,7 +80,7 @@ public class PlayerScript : MonoBehaviour {
         }
 
 
-        // else of the update shouldn't be used when in inventory layer
+        // Else of the update shouldn't be used when in inventory layer
         if (inventoryScript.inInventoryLayer)
             return;
 
@@ -105,6 +105,5 @@ public class PlayerScript : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.F))
             DrawCollectables();
-
 	}
 }
