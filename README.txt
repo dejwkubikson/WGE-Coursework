@@ -54,3 +54,4 @@
 - The first dialogue conversation displays properly in the GUI
 - Dialogue fully works. The player can choose different options which will result in differnt NPC reactions.
 - Further improvements to the camera movement. 
+- Started working on the inspector that will allow the developer to create / load dialogues.
