@@ -8,6 +8,8 @@ TagManager:
   - InventoryLayer
   - Inventory
   - Terrain
+  - DialogueWindow
+  - NPC
   layers:
   - Default
   - TransparentFX

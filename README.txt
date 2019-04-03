@@ -47,4 +47,10 @@
 2/04/2019
 - Added loading from file by user input in the main menu
 - Scene 1 is finished
-- Started working on loading the dialogue - it can properly go through one whole conversation.
+- Started working on loading the dialogue - it can properly go through one whole conversation
+- Added GUI to scene 2 for dialogue display
+
+3/04/2019
+- The first dialogue conversation displays properly in the GUI
+- Dialogue fully works. The player can choose different options which will result in differnt NPC reactions.
+- Further improvements to the camera movement. 

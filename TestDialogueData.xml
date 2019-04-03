@@ -1,0 +1,40 @@
+<Dialogue>
+	<conversation id="start">
+		<text speaker = "NPC">start</text>
+		<options>
+			<option next = "option1">1</option>
+			<option next = "option2">2</option>
+			<option next = "option3">3</option>
+		</options>
+	</conversation>
+		
+	<conversation id = "option1">
+		<text speaker = "NPC">1</text>
+		<options>
+			<option next="end">end</option>
+		</options>
+	</conversation>
+	
+	<conversation id = "option2">
+		<text speaker = "NPC">2</text>
+		<options>
+			<option next="end">end</option>
+		</options>
+	</conversation>
+	
+	<conversation id = "option3">
+		<text speaker = "NPC">3</text>
+			<options>
+				<option next = "option3.1">3.1</option>
+				<option next = "end">end</option>
+			</options>
+	</conversation>
+	
+	<conversation id = "option3.1">
+		<text speaker = "NPC">3.1</text>
+			<options>
+				<option next = "end">end</option>
+			</options>
+	</conversation>
+		
+</Dialogue>

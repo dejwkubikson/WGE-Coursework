@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// This script should be attached to the player, disables movement, starts dialogue when near the NPC.
 public class PlayerScript2D : MonoBehaviour
 {
     // STARTING POS X = -12, Y = 0, Z = -7.419922
@@ -43,15 +44,13 @@ public class PlayerScript2D : MonoBehaviour
             //Debug.Log("Close to the NPC.");
 
             // We want to start the dialogue once
-            if (!(dialogueScript.dialogueStarted))
+            if (!(dialogueScript.dialogueStarted) && !(dialogueScript.dialogueEnded))
                 dialogueScript.StartDialogue();
 
             // Stop movement if the dialogue hasn't ended
             if (!(dialogueScript.dialogueEnded))
                 playerMovement._mState = MovementState.DISABLED;
             else playerMovement._mState = MovementState.ON_GROUND;
-
-
         }
 
     }
