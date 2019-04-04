@@ -17,7 +17,8 @@ public class DialogueEditorWindow : EditorWindow
     public Dictionary<string, string> playerDict;
     bool endBtn = true;
 
-    private int conversationNumber = 0;
+    private int conversationCounter = 0;
+    private int optionCounter = 0;
     private int popUpIndex;
 
     [MenuItem("CustomWindows/DialogueWindow")]
@@ -31,33 +32,20 @@ public class DialogueEditorWindow : EditorWindow
     {
         Debug.Log("Called AddConversation()");
 
-        speakerText = EditorGUILayout.TextField("Speaker text: ", speakerText);
+        conversationCounter++;
+    }
 
-        if (conversationNumber == 0)
-        {
-            speakerDict.Add("start", speakerText);
-        }
-        else
-        {
-            string[] playerValues = new string[playerDict.Count];
-            int index = 0;
-            foreach(string value in playerDict.Values)
-            {
-                playerValues[index] = value;
-                index++;
-            }
-            EditorGUILayout.Popup(index, playerValues);
-        }
-        
-        conversationNumber++;
+    private void ClearConversations()
+    {
+        conversationCounter = 0;
+        optionCounter = 0;
     }
 
     private void AddOption()
     {
-        GUILayout.BeginHorizontal();
-        playerText = EditorGUILayout.TextField("Player text: ", playerText);
-        endBtn = EditorGUILayout.Toggle("Ends dialogue?", endBtn);
-        GUILayout.EndHorizontal();
+        Debug.Log("Called AddOption()");
+
+        optionCounter++;
     }
 
     private void OnGUI()
@@ -74,8 +62,33 @@ public class DialogueEditorWindow : EditorWindow
             AddConversation();
         }
 
+        string[] playerValues = new string[] { "I'm doing okay.", "I'm doing terribly.", "I'm doing Great!" }; // placeholder
+
+        for (int i = 0; i < conversationCounter; i++)
+        {
+            speakerText = EditorGUILayout.TextField("Speaker (NPC) text: ", speakerText);
+            EditorGUILayout.LabelField("Which text does the player say to start this conversation?");
+            popUpIndex = EditorGUILayout.Popup(popUpIndex, playerValues);
+
+            if (GUILayout.Button("Add option"))
+                AddOption();
+
+            for (int j = 0; j < optionCounter; j++)
+            {
+                GUILayout.BeginHorizontal();
+                playerText = EditorGUILayout.TextField("Player text: ", playerText);
+                endBtn = EditorGUILayout.Toggle("Ends dialogue?", endBtn);
+                GUILayout.EndHorizontal();
+            }
+        }
+
+        if (GUILayout.Button("Clear conversations"))
+        {
+            ClearConversations();
+        }
+
         // THIS NEEDS TO BE IN ADD CONVERSATION FUNCTION
-        EditorGUILayout.LabelField("<conversation>");
+        /*EditorGUILayout.LabelField("<conversation>");
         speakerText = EditorGUILayout.TextField("Speaker (NPC) text: ", speakerText);
         string[] playerValues = new string[] { "I'm doing okay.", "I'm doing terribly.", "I'm doing Great!" }; // placeholder
         EditorGUILayout.LabelField("Which text does the player say to start this conversation?");
@@ -93,7 +106,7 @@ public class DialogueEditorWindow : EditorWindow
         EditorGUILayout.LabelField("</option>");
         // THIS NEEDS TO BE IN ADD OPTION FUNCTION
         EditorGUILayout.LabelField("</conversation>");
-        // THIS NEEDS TO BE IN ADD CONVERSATION FUNCTION
+        // THIS NEEDS TO BE IN ADD CONVERSATION FUNCTION*/
 
         EditorGUILayout.LabelField("End of the dialogue");
         // When create dialogue button is pressed
