@@ -55,3 +55,6 @@
 - Dialogue fully works. The player can choose different options which will result in differnt NPC reactions.
 - Further improvements to the camera movement. 
 - Started working on the inspector that will allow the developer to create / load dialogues.
+
+04/04/2019
+- Added text fields, buttons and popups to the new window dialogue inspector

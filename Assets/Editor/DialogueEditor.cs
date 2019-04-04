@@ -13,7 +13,7 @@ public class DialogueEditor : Editor
         {
             if (GUILayout.Button("Create Dialogue"))
             {
-                Debug.Log("Created dialogue");
+                Debug.Log("Created dialogue in editor script");
             }
         }
     }
