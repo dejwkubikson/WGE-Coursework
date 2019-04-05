@@ -1,5 +1,5 @@
 <Dialogue>
-	<conversation id="start">
+	<conversation id = "start">
 		<text speaker = "NPC">Hey, how's it going?</text>
 		<options>
 			<option next = "option1">I'm doing okay.</option>
@@ -11,14 +11,14 @@
 	<conversation id = "option1">
 		<text speaker = "NPC">That's good to hear.</text>
 		<options>
-			<option next="end">Bye.</option>
+			<option next= "end">Bye.</option>
 		</options>
 	</conversation>
 	
 	<conversation id = "option2">
 		<text speaker = "NPC">Aww, that's a shame</text>
 		<options>
-			<option next="end">Bye.</option>
+			<option next= "end">Bye.</option>
 		</options>
 	</conversation>
 	

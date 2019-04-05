@@ -58,3 +58,6 @@
 
 04/04/2019
 - Added text fields, buttons and popups to the new window dialogue inspector
+
+05/04/2019
+- Dialogue editor in inspector properly shows the amount of conversations, options and stores them up to second 'branch'
