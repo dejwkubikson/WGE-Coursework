@@ -20,21 +20,23 @@ public class DialogueEditorWindow : EditorWindow
 
     // make lists
     public string playerText;
-    public string playerKey;
+    //public string playerKey;
 
 
     //public Dictionary<string, string> playerDict;
 
     // make list
     bool endBtn = false;
+    
 
     private int conversationCounter = 0;
-    private int optionCounter = 0;
     private int popUpIndex;
+    private int optionCounter = 0;
+    private int addedDictionaryEntries = 0;
 
     public Dictionary<string, string> speakerDict = new Dictionary<string, string>();
     public Dictionary<string, string> playerDict = new Dictionary<string, string>();
-    public Dictionary<int, int> conversationDict = new Dictionary<int, int>();
+    public Dictionary<int, float> conversationDict = new Dictionary<int, float>();
     public Dictionary<int, int> conversationOptionDict = new Dictionary<int, int>();
     public Dictionary<string, bool> playerTextEndsDialogue = new Dictionary<string, bool>();
 
@@ -50,10 +52,9 @@ public class DialogueEditorWindow : EditorWindow
 
     private void AddConversation()
     {
-        Debug.Log("Called AddConversation(), conversationCounter is " + conversationCounter);
+        //Debug.Log("Called AddConversation(), conversationCounter is " + conversationCounter);
 
-        optionCounter = 0;
-        conversationDict.Add(conversationCounter, optionCounter);
+        conversationDict.Add(conversationCounter, 0);
         conversationCounter++;
     }
 
@@ -68,6 +69,7 @@ public class DialogueEditorWindow : EditorWindow
     {
         conversationCounter = 0;
         optionCounter = 0;
+        addedDictionaryEntries = 0;
 
         speakerDict.Clear();
         playerDict.Clear();
@@ -78,14 +80,15 @@ public class DialogueEditorWindow : EditorWindow
 
     private void AddOption(int whichKey)
     {
-        Debug.Log("Called AddOption() with key " + whichKey);
+        //Debug.Log("Called AddOption() with key " + whichKey);
 
         conversationDict[whichKey] += 1;
+        optionCounter++;
     }
 
     private void RemoveOption(int whichKey)
     {
-        Debug.Log("Called RemoveOption() with key " + whichKey);
+        //Debug.Log("Called RemoveOption() with key " + whichKey);
 
         conversationDict[whichKey] -= 1;
 
@@ -133,9 +136,8 @@ public class DialogueEditorWindow : EditorWindow
 
         // Creating a dictionary iterator which will be used in functions as a key of conversationDict dictionary
         int dictIterator = 0;
-
         // For each conversation displaying text fields and options accociated to that conversation
-        foreach(int key in conversationDict.Keys)
+        foreach (int key in conversationDict.Keys)
         {
             if (dictIterator == 0)
             {
@@ -166,9 +168,10 @@ public class DialogueEditorWindow : EditorWindow
 
                 // The user needs to select what player's text started this conversation
                 popUpIndex = EditorGUILayout.Popup(conversationOptionDict[key], playerValues);
+
                 // Assigning the value to the dictionary which will then create appropriate ID for the player's option
                 conversationOptionDict[key] = popUpIndex;
-
+                
                 // If the select list is in it's default position it won't allow the user to add any options to this conversation
                 if (popUpIndex == 0)
                     allowToAddOption = false;
@@ -179,11 +182,11 @@ public class DialogueEditorWindow : EditorWindow
             }
 
             // Displaying options the player will be able to choose from
-            for(int i = 0; i < conversationDict[key]; i++)
+            for (int i = 0; i < conversationDict[key]; i++)
             {
                 // Used to make the code a little bit more clear
                 string optionID = "option";
-
+                Debug.Log("option counter " + optionCounter + " dict entries " + addedDictionaryEntries);
                 // If it's the first conversation options should be layed out like this: option1, option2, option3...
                 if (dictIterator == 0)
                 {
@@ -201,21 +204,25 @@ public class DialogueEditorWindow : EditorWindow
                     // If it's another conversation (2nd, 3rd...) options are layed out like this: 
                     // option1.1, option1.2 or option2.1, option2.2 or option2.1.1, option2.1.2 and so on
                     // depending on which player's text leads here
-                    //optionID = "option" + conversationOptionDict[key] + "." + (i + 1);
+                    //optionID = "option" + conversationDict[key] + "." + (i + 1);
+
+                    // used for adding keys
                     foreach (string playerKey in playerDict.Keys)
                     {
-                        optionID = playerKey;
-                    }
-
-                    optionID += conversationOptionDict[key] + "." + (i + 1);
+                        if (playerDict[playerKey].Contains(playerValues[popUpIndex]))
+                        {
+                            optionID = playerKey + "." + conversationDict[key];
+                        }
+                    }                 
                     
-
                     // If the dictionary doesn't contain this key
                     if (!(playerDict.ContainsKey(optionID)))
                     {
                         playerDict.Add(optionID, "");
                         playerTextEndsDialogue.Add(optionID, false);
                     }
+
+                    Debug.Log("key = " + key + " value = " + conversationDict[key] + " option key = " + key + " value = " + conversationOptionDict[key] + " creates " + optionID);
                 }
 
                 GUILayout.BeginHorizontal();
@@ -226,6 +233,7 @@ public class DialogueEditorWindow : EditorWindow
                 // Assigning value to the dictionaries
                 playerDict[optionID] = playerText;
                 playerTextEndsDialogue[optionID] = endBtn;
+
                 // Clearing playerText after adding it to the dictionary
                 playerText = "";
             }
