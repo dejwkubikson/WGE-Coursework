@@ -7,7 +7,10 @@ public class CameraScript : MonoBehaviour
 {
     public GameObject player;
     public float cameraSpeed = 0.2f; // camera's speed following the player
+    public Transform cameraHolder;
 
+    public bool shakeCameraOnce = false;
+    public bool cameraShakeActive = false;
     public bool followPlayer = true; // if true the camera will follow the player
     public bool followNPC = false; // if true the camera will follow the NPC
     public bool zoomCamera = false; // if true the camera will zoom on the following character
@@ -16,13 +19,14 @@ public class CameraScript : MonoBehaviour
 
     private float leftBorder = -2.4f; // the left border the camera shouldn't move out of
     private float rightBorder = 26.9f; // the right border the camera shouldn't move out of
+    private Vector3 rightBorderPos; // vector3 position of the right border
+
     private bool getNPCOffsetOnce = false;
-    private Vector3 offsetNPC;
+    private Vector3 offsetNPC; // offset to the NPC
     private Vector3 offset; // offset to the player
     private float zoomAtStart; // getting the ortographic zoom at the start
     private Camera camera;
-
-    private Vector3 rightBorderPos; // vector3 position of the right border
+    private float timeCounter = 0; // used for smooth transition
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +49,32 @@ public class CameraScript : MonoBehaviour
             followPlayer = false;
             followNPC = true;
         }
+    }
+
+    // Returns a perlin float between -1 and 1, based off the time counter.
+    float GetSeed(float seed)
+    {
+        return (Mathf.PerlinNoise(seed, timeCounter) * 2f);
+    }
+
+    // Generates new Vector3 coords
+    Vector3 GetVect3()
+    {
+        // Used to get more clean code
+        float cameraHolderX = cameraHolder.transform.position.x;
+        float cameraHolderY = cameraHolder.transform.position.y;
+
+        return new Vector3(GetSeed(cameraHolderX) + cameraHolderX, GetSeed(cameraHolderY) + cameraHolderY, -15);
+    }
+
+    // Shakes camera. Changes a boolean value so that the camera shake isn't performed every frame the player is walking on the ground
+    public IEnumerator ShakeCamera()
+    {
+        shakeCameraOnce = true;
+
+        cameraShakeActive = true;
+        yield return new WaitForSeconds(0.1f);
+        cameraShakeActive = false;
     }
 
     // In LateUpdate() the player object was a bit 'woobly' when moving
@@ -116,11 +146,20 @@ public class CameraScript : MonoBehaviour
                     if (transform.position.x < leftBorder)
                         transform.position = new Vector3(leftBorder, transform.position.y, transform.position.z);
 
-                    // Blocking the camera from moving to far right, thus givving the player a hint that it's the end of the map
+                    // Blocking the camera from moving to far right, thus giving the player a hint that it's the end of the map
                     if (transform.position.x > rightBorder)
                         transform.position = new Vector3(rightBorder, transform.position.y, transform.position.z);
                 }
             }
+        }
+
+        // The camera shake will be quick, not too big and smooth
+        if (cameraShakeActive)
+        {
+            timeCounter += Time.deltaTime;
+            Vector3 newPos = GetVect3();
+            Vector3 lerpedShake = Vector3.Lerp(cameraHolder.transform.position, newPos, 0.05f);
+            cameraHolder.transform.position = lerpedShake;
         }
     }
 }

@@ -672,11 +672,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 609484268}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 29.6, y: 0, z: -9.419922}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 2132402044}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &609484272
 MonoBehaviour:
@@ -692,6 +692,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1875309103}
   cameraSpeed: 0.2
+  cameraHolder: {fileID: 2132402044}
+  shakeCameraOnce: 0
+  cameraShakeActive: 0
   followPlayer: 1
   followNPC: 0
   zoomCamera: 0
@@ -815,7 +818,7 @@ GameObject:
   - component: {fileID: 796843317}
   m_Layer: 0
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: FirstPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1311,7 +1314,7 @@ GameObject:
   - component: {fileID: 1038685953}
   m_Layer: 0
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: LastPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1618,7 +1621,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4101536231121934, guid: af013052b86cd6d42a2ea33b8533664a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 29.6
+      value: 27.99
       objectReference: {fileID: 0}
     - target: {fileID: 4101536231121934, guid: af013052b86cd6d42a2ea33b8533664a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2406,3 +2409,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1975523115}
   m_CullTransparentMesh: 0
+--- !u!1 &2132402043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2132402044}
+  m_Layer: 0
+  m_Name: CameraHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2132402044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132402043}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 27.99, y: 0, z: -15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 609484271}
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

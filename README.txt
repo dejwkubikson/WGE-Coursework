@@ -61,3 +61,6 @@
 
 05/04/2019
 - Dialogue editor in inspector properly shows the amount of conversations, options and stores them up to second 'branch'
+
+09/04/2019
+- Added camera shake when the player lands on ground

@@ -58,13 +58,19 @@ public class PlayerMovement2D : MonoBehaviour {
 
         if (_mState != MovementState.DASHING)
         {
+            CameraScript cameraScript = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>();
             if (Physics2D.OverlapBoxAll(new Vector2(_feet.position.x, _feet.position.y), new Vector2(0.25f, 0.25f), 0f).Length > 1 && _mState != MovementState.DASHING)
             {
                 SwitchState(MovementState.ON_GROUND);
+               
+                // Shakes the camera if it hasn't yet been shaked
+                if(!(cameraScript.shakeCameraOnce))
+                    StartCoroutine(cameraScript.ShakeCamera());
             }
             else
             {
                 SwitchState(MovementState.IN_AIR);
+                cameraScript.shakeCameraOnce = false;
             }
         }
 

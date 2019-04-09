@@ -22,17 +22,13 @@ public class DialogueEditorWindow : EditorWindow
     public string playerText;
     //public string playerKey;
 
-
     //public Dictionary<string, string> playerDict;
 
     // make list
     bool endBtn = false;
     
-
     private int conversationCounter = 0;
     private int popUpIndex;
-    private int optionCounter = 0;
-    private int addedDictionaryEntries = 0;
 
     public Dictionary<string, string> speakerDict = new Dictionary<string, string>();
     public Dictionary<string, string> playerDict = new Dictionary<string, string>();
@@ -68,8 +64,6 @@ public class DialogueEditorWindow : EditorWindow
     private void ClearConversations()
     {
         conversationCounter = 0;
-        optionCounter = 0;
-        addedDictionaryEntries = 0;
 
         speakerDict.Clear();
         playerDict.Clear();
@@ -83,7 +77,6 @@ public class DialogueEditorWindow : EditorWindow
         //Debug.Log("Called AddOption() with key " + whichKey);
 
         conversationDict[whichKey] += 1;
-        optionCounter++;
     }
 
     private void RemoveOption(int whichKey)
@@ -101,6 +94,18 @@ public class DialogueEditorWindow : EditorWindow
                 break;
             }
         }
+    }
+
+    private void LoadDialogueToInspector()
+    {
+
+    }
+
+    private void LoadDialogueToScene()
+    {
+        DialogueScript dialogueScript;
+        dialogueScript = GameObject.Find("DialogueObject").GetComponent<DialogueScript>();
+        dialogueScript.dialogueFileName = dialogueFileNameToLoad;
     }
 
     // Runs every frame
@@ -186,7 +191,6 @@ public class DialogueEditorWindow : EditorWindow
             {
                 // Used to make the code a little bit more clear
                 string optionID = "option";
-                Debug.Log("option counter " + optionCounter + " dict entries " + addedDictionaryEntries);
                 // If it's the first conversation options should be layed out like this: option1, option2, option3...
                 if (dictIterator == 0)
                 {
@@ -305,13 +309,13 @@ public class DialogueEditorWindow : EditorWindow
         // If the user wants to load the dialogue to the inspector
         if (GUILayout.Button("Load dialogue to inspector"))
         {
-            Debug.Log("speaker " + speakerName);
+            LoadDialogueToInspector();
         }
 
         // If the user wants to load the dialogue to the scene
         if (GUILayout.Button("Load dialogue to scene"))
         {
-            Debug.Log("speaker " + speakerName);
+            LoadDialogueToScene();
         }
 
         // Created to add space
