@@ -11,7 +11,6 @@ public class DialogueEditorWindow : EditorWindow
     public string dialogueFileNameToLoad;
     public string speakerName;
 
-
     // make lists
     public string speakerText;
     public string speakerKey;
@@ -336,17 +335,4 @@ public class DialogueEditorWindow : EditorWindow
     {
         Repaint();
     }
-}
-
-class converstion
-{
-    string id;
-    string text;
-    //List of options;
-}
-
-class options
-{
-    string text;
-    string next;
 }
