@@ -32,9 +32,9 @@ public class DialogueEditorWindow : EditorWindow
 
     public Dictionary<string, string> speakerDict = new Dictionary<string, string>();
     public Dictionary<string, string> playerDict = new Dictionary<string, string>();
-    public Dictionary<int, float> conversationDict = new Dictionary<int, float>();
-    public Dictionary<int, int> conversationOptionDict = new Dictionary<int, int>();
     public Dictionary<string, bool> playerTextEndsDialogue = new Dictionary<string, bool>();
+    public Dictionary<int, int> conversationDict = new Dictionary<int, int>();
+    public Dictionary<int, int> conversationOptionDict = new Dictionary<int, int>();
 
     Vector2 scrollPos = Vector2.zero;
     private bool allowToAddOption = true;
@@ -77,6 +77,7 @@ public class DialogueEditorWindow : EditorWindow
         //Debug.Log("Called AddOption() with key " + whichKey);
 
         conversationDict[whichKey] += 1;
+
     }
 
     private void RemoveOption(int whichKey)
@@ -217,7 +218,7 @@ public class DialogueEditorWindow : EditorWindow
                         {
                             optionID = playerKey + "." + conversationDict[key];
                         }
-                    }                 
+                    }
                     
                     // If the dictionary doesn't contain this key
                     if (!(playerDict.ContainsKey(optionID)))
@@ -288,7 +289,7 @@ public class DialogueEditorWindow : EditorWindow
         // If clear conversations button was pressed
         if (GUILayout.Button("Clear conversations"))
         {
-            //if(EditorUtility.DisplayDialog("Clear all conversations?", "Are you sure you want to clear all conversations?", "Clear all", "Cancel"))
+            if(EditorUtility.DisplayDialog("Clear all conversations?", "Are you sure you want to clear all conversations?", "Clear all", "Cancel"))
                 ClearConversations();
         }
 
@@ -322,17 +323,30 @@ public class DialogueEditorWindow : EditorWindow
         EditorGUILayout.LabelField("");
         EditorGUILayout.EndScrollView();
 
-        foreach(string key in playerDict.Keys)
+        /*foreach(string key in playerDict.Keys)
         {
             if(playerTextEndsDialogue[key])
                 Debug.Log("Player key " + key + " with text " + playerDict[key] + " ends the dialogue");
             else
                 Debug.Log("Player key " + key + " with text " + playerDict[key] + " doesn't end the dialogue");
-        }
+        }*/
     }
 
     void OnInspectorUpdate()
     {
         Repaint();
     }
+}
+
+class converstion
+{
+    string id;
+    string text;
+    //List of options;
+}
+
+class options
+{
+    string text;
+    string next;
 }

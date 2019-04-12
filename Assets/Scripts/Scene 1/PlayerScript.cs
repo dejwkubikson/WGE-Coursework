@@ -64,19 +64,19 @@ public class PlayerScript : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            chosenBlock = inventoryScript.SelectFromInventory(1);
+            chosenBlock = inventoryScript.SelectFromInventory(0);
         }
         if (Input.GetKey(KeyCode.Alpha2))
         {
-            chosenBlock = inventoryScript.SelectFromInventory(2);
+            chosenBlock = inventoryScript.SelectFromInventory(1);
         }
         if (Input.GetKey(KeyCode.Alpha3))
         {
-            chosenBlock = inventoryScript.SelectFromInventory(3);
+            chosenBlock = inventoryScript.SelectFromInventory(2);
         }
         if (Input.GetKey(KeyCode.Alpha4))
         {
-            chosenBlock = inventoryScript.SelectFromInventory(4);
+            chosenBlock = inventoryScript.SelectFromInventory(3);
         }
 
 

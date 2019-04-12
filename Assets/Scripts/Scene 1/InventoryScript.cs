@@ -209,12 +209,19 @@ public class InventoryScript : MonoBehaviour
         // Get the possition of that block type in the posListType
         for (int i = 0; i < posListType.Count; i++)
         {
+            //Debug.Log("Pos " + i + " has block " + posListType[i]);
+
             if (posListType[i] == block)
             {
                 posToModify = i;
                 break;
             }
         }
+
+        Debug.Log("pos to modify " + posToModify + " block type " + posListType[posToModify] + " highlight " + highlight);
+
+        //Debug.Log("poslistcount " + posListType.Count);
+        //Debug.Log("LAST BLOCK " + posListType[posListType.Count]);
 
         // Highlight or unhighlight block in inventory
         if (highlight)
@@ -269,9 +276,11 @@ public class InventoryScript : MonoBehaviour
                 // Checking if the item is in inventory (at least one block) and highlighting it
                 if (blockDictionary[key] > 0)
                 {
+                    Debug.Log("passing key " + key);
                     HighlightBlockInInventory(key, true);
                     highlightedObjects++;
                     highlightedPos = dictionaryIndex;
+                    //Debug.Log("Highlighted " + key + " at " + highlightedPos);
                 }
             }
             else
@@ -283,6 +292,7 @@ public class InventoryScript : MonoBehaviour
         // If only one object was highlighted throughout the name search it will be selected for the player
         if (highlightedObjects == 1)
         {
+            Debug.Log("HIGHLIGHTED ONE OBJECT at pos " + highlightedPos);
             gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(highlightedPos);
         }
     }
@@ -492,7 +502,7 @@ public class InventoryScript : MonoBehaviour
         }
 
         // Selecting the first block in the sorted inventory
-        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(1);
+        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(0);
     }
 
     // Sorting by amount of block from low to high
@@ -557,7 +567,7 @@ public class InventoryScript : MonoBehaviour
         }
 
         // Selecting the first block in the sorted inventory
-        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(1);
+        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(0);
     }
 
     // Sorting by block name from low to high
@@ -617,7 +627,7 @@ public class InventoryScript : MonoBehaviour
         }
 
         // Selecting the first block in the sorted inventory
-        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(1);
+        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(0);
     }
 
     // Sorting by block name from high to low
@@ -679,7 +689,7 @@ public class InventoryScript : MonoBehaviour
         }
 
         // Selecting the first block in the sorted inventory
-        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(1);
+        gameObject.GetComponent<PlayerScript>().chosenBlock = SelectFromInventory(0);
 
     }
 
@@ -717,7 +727,7 @@ public class InventoryScript : MonoBehaviour
     {
         int blockType = 0;
 
-        pos -= 1;
+        //pos -= 1;
 
         // Changing the whole inventory to 'unselected'
         for (int i = 0; i < posList.Count; i++)
