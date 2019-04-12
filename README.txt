@@ -64,3 +64,6 @@
 
 09/04/2019
 - Added camera shake when the player lands on ground
+
+12/04/2019
+- Started new script for dialogue editor that will be class not dictionary based
