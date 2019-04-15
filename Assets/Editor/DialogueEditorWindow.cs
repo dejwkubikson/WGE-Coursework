@@ -38,7 +38,7 @@ public class DialogueEditorWindow : EditorWindow
     Vector2 scrollPos = Vector2.zero;
     private bool allowToAddOption = true;
 
-    [MenuItem("CustomWindows/DialogueWindow")]
+    [MenuItem("CustomWindows/DialogueWindowOLD")]
     static void Init()
     {
         window = (DialogueEditorWindow)EditorWindow.GetWindow(typeof(DialogueEditorWindow));

@@ -5,12 +5,11 @@ using UnityEngine;
 // This script should be attached to the player, disables movement, starts dialogue when near the NPC.
 public class PlayerScript2D : MonoBehaviour
 {
-    // STARTING POS X = -12, Y = 0, Z = -7.419922
-    Vector3 playerPos;
-    Vector3 npcPos;
-    float distanceToNPC;
-    PlayerMovement2D playerMovement;
-    DialogueScript dialogueScript;
+    Vector3 playerPos; // holds player's position
+    Vector3 npcPos; // holds NPC's position
+    float distanceToNPC; // distance between player and npc
+    PlayerMovement2D playerMovement; // used this script to disable movement when in conversation with the NPC
+    DialogueScript dialogueScript; // used to start the dialogue
 
     // Start is called before the first frame update
     void Start()

@@ -162,7 +162,7 @@ public class DialogueScript : MonoBehaviour
             // Attaching script to the new object
             newOptionField.AddComponent<OptionScript>();
             // Assigning position to the new option
-            newOptionField.transform.position = new Vector3(544.0f, (133 - (yOffset * index)), 0.0f);
+            newOptionField.transform.position = new Vector3(Screen.width / 2, (133 - (yOffset * index)), 0.0f);
             // Getting the text component
             Text newOptionFieldTxt = newOptionField.gameObject.GetComponent<Text>();
             // Setting the value of the text field with prefix of option number and '.'

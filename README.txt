@@ -67,3 +67,6 @@
 
 12/04/2019
 - Started new script for dialogue editor that will be class not dictionary based
+
+15/04/2019
+- Dialogue editor fully works. Loads the dialogue to the inspector and scene. Creates dialogues. Added more human error prevention 'ifs'.
