@@ -55,13 +55,11 @@ public class PlayerScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
+        inventoryScript = gameObject.GetComponent<InventoryScript>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        InventoryScript inventoryScript = gameObject.GetComponent<InventoryScript>();
-
         if (Input.GetKey(KeyCode.Alpha1))
         {
             chosenBlock = inventoryScript.SelectFromInventory(0);
@@ -78,7 +76,6 @@ public class PlayerScript : MonoBehaviour {
         {
             chosenBlock = inventoryScript.SelectFromInventory(3);
         }
-
 
         // Else of the update shouldn't be used when in inventory layer
         if (inventoryScript.inInventoryLayer)

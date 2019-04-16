@@ -16,11 +16,6 @@ public class VoxelChunk : MonoBehaviour {
     public string fileName = ""; // XML file name to load chunk from
 
     private List<int> blockList; // Contains the amount of blocks the player has. Index 0 will store grass blocks, 1 dirt, 2 sand and 3 stones.
-    // delegate signature
-    public delegate void EventBlockChangedWithType(int blockType);
-    
-    // event instance for EventBlockChangedWithType()
-    public static event EventBlockChangedWithType OnEventBlockChanged;
 
     void CreateCollectableBlock(int x, int y, int z, int destroyedBlock)
     {

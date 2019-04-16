@@ -5,7 +5,7 @@ using UnityEngine;
 // This script is attached to a collectable. It plays sounds, destroys when is collected and can be drawn towards the player.
 public class CollectableScript : MonoBehaviour
 {
-    GameObject player; // Used to get current position
+    GameObject player; // Used to get current player position
     GameObject camera; // The collectable moves to the camera so that it doesn't just move on the ground but goes to the player's 'face' so that he clearly can see picking it up
     public int blockType; 
     public bool moveTowards = false; // if the player is close enough to the collectable it should move towards him even if he starts to move away from it
@@ -28,7 +28,7 @@ public class CollectableScript : MonoBehaviour
         inventory.AddItemToInventory(blockType);
         AudioClip pickUpSound = Resources.Load<AudioClip>("Sounds/pick_up_sound");
         audioSource.PlayOneShot(pickUpSound);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(pickUpSound.length);
         Destroy(gameObject);
     }
 

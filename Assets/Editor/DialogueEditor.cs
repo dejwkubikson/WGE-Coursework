@@ -264,11 +264,12 @@ public class DialogueEditor : EditorWindow
     {
         // Used for scrolling
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, true, true, GUILayout.Height(Screen.height));
-
-        // Showing where the dialogue starts
-        EditorGUILayout.LabelField("Start of the dialogue");
         // The name of the file that is supposed to be created
         dialogueFileNameToSave = EditorGUILayout.TextField("Name of file to create: ", dialogueFileNameToSave);
+        // Created to add space and make it more clear for the user
+        EditorGUILayout.LabelField("");
+        // Showing where the dialogue starts
+        EditorGUILayout.LabelField("Start of the dialogue");
         // Speaker's name (NPC name)
         speakerName = EditorGUILayout.TextField("Speaker (NPC) name: ", speakerName);
 
@@ -408,7 +409,7 @@ public class DialogueEditor : EditorWindow
             }
 
             // If there is more than 1 conversation adding remove conversation option
-            if (conversationIterator > 1)
+            if (conversationIterator > 0)
             {
                 // If remove conversation button was pressed
                 if (GUILayout.Button("Remove conversation", GUILayout.Width(Screen.width / 4 * 1)))

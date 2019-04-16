@@ -19,11 +19,6 @@ public class VoxelGenerator : MonoBehaviour {
     public Dictionary<string, Vector2> texNameCoordDictionary;
 
     int numQuads = 0;
-
-	// Use this for initialization
-	void Start () {
-
-	}
 	
     public void Initialise()
     {
