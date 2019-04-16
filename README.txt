@@ -69,4 +69,10 @@
 - Started new script for dialogue editor that will be class not dictionary based
 
 15/04/2019
-- Dialogue editor fully works. Loads the dialogue to the inspector and scene. Creates dialogues. Added more human error prevention 'ifs'.
+- Dialogue editor fully works. Loads the dialogue to the inspector and scene. Creates dialogues. Added more human error prevention scripts.
+
+16/04/2019
+- Added different block destroy sounds. 
+- Added buttons at each scene to make it easier to navigate through the scenes. 
+- Added background to the main menu.
+- Scenes are finished.

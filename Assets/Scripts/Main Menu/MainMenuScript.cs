@@ -52,12 +52,17 @@ public class MainMenuScript : MonoBehaviour
 			{	
 				gameDataScript.fileName = "AssessmentChunk1.xml"; // Loading default chunk because the file wasn't found
 
-				// I don't want to display error message when the user just wants to play with default chunk and doesn't enter anything in the input field
+				// Displaying the 'error' message. If the user didn't enter anything in the input field it means that he just wants to play with the default chunk, therefore the message is more of an information of what's happening
 				if (fileName != "") 
 				{
 					errorText.color = Color.red;
 					errorText.text = "Couldn't find the file. Loading default chunk.";
 				}
+                else
+                {
+                    errorText.color = Color.green;
+                    errorText.text = "Loading default chunk.";
+                }
 			}
 		}
 

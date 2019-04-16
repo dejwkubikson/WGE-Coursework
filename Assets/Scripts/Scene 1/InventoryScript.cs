@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // just to use the back to main menu button
 using UnityStandardAssets.Characters.FirstPerson; // Used to disable and enable FirstPersonController script
+
 
 // This script should be attached to the player. It performs all the actions on the inventory, from sorting, searching to updating the display of the blocks.
 public class InventoryScript : MonoBehaviour
@@ -19,6 +21,11 @@ public class InventoryScript : MonoBehaviour
     private List<Transform> posList;
     private bool closedInventoryLayer = false;
     private List<string> posListType; // This will be used as the index in inventory of a certain block type 
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 
     void CreateInventory()
     {

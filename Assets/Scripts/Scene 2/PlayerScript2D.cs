@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // just to use the back to main menu button
 
 // This script should be attached to the player, disables movement, starts dialogue when near the NPC.
 public class PlayerScript2D : MonoBehaviour
@@ -10,6 +11,11 @@ public class PlayerScript2D : MonoBehaviour
     float distanceToNPC; // distance between player and npc
     PlayerMovement2D playerMovement; // used this script to disable movement when in conversation with the NPC
     DialogueScript dialogueScript; // used to start the dialogue
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +57,5 @@ public class PlayerScript2D : MonoBehaviour
                 playerMovement._mState = MovementState.DISABLED;
             else playerMovement._mState = MovementState.ON_GROUND;
         }
-
     }
 }

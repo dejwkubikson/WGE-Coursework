@@ -11,7 +11,8 @@ public class VoxelChunk : MonoBehaviour {
     int chunkSize = 16;
     public Material material;
 
-    public List<AudioClip> soundEffects;
+    public List<AudioClip> placeSoundEffects;
+    public List<AudioClip> destroySoundEffects;
     public string fileName = ""; // XML file name to load chunk from
 
     private List<int> blockList; // Contains the amount of blocks the player has. Index 0 will store grass blocks, 1 dirt, 2 sand and 3 stones.
@@ -161,12 +162,17 @@ public class VoxelChunk : MonoBehaviour {
                 int destroyedBlock = terrainArray[(int)index.x, (int)index.y, (int)index.z];
                 // Creating a collectable block
                 CreateCollectableBlock((int)index.x, (int)index.y, (int)index.z, destroyedBlock);
+                // Play destroy block sound from list. The sound list is in order with the block type: 0 - destroy grass block, 1 - destroy dirt block, 2 - destroy sand block, 3 - destroy stone block
+                GetComponent<AudioSource>().PlayOneShot(destroySoundEffects[destroyedBlock - 1]);
             }
             else
             {
                 // Update the inventory
                 if (!(inventoryScript.SubtractItemFromInventory(blockType)))
                     return;
+
+                // Play place block sound from list. The sound list is in order with the block type: 0 - place grass block sound, 1 - place dirt block sound, 2 - place sand block sound, 3 - place stone block sound
+                GetComponent<AudioSource>().PlayOneShot(placeSoundEffects[blockType - 1]);
             }
 
             // Change the block to the required type
@@ -175,11 +181,6 @@ public class VoxelChunk : MonoBehaviour {
             CreateTerrain();
             // Update the mesh data
             voxelGenerator.UpdateMesh();
-
-            // Play sound from list. The sound effect list is in order with the block type: 0 - destroy sound, 1 - place grass block sound, 2 - place dirt block sound, 3 - place sand block sound, 4 - place stone block sound
-            GetComponent<AudioSource>().PlayOneShot(soundEffects[blockType]);
-
-            //@@@@@@@@@@@@@@OnEventBlockChanged(blockType);
         }
     }
 
@@ -193,16 +194,14 @@ public class VoxelChunk : MonoBehaviour {
 
         voxelGenerator.Initialise();
 
-        fileName = "AssessmentChunk2.xml";
-
         // Getting file name from GameDataScript
-        //GameDataScript gameDataScript = GameObject.Find("GameDataObject").GetComponent<GameDataScript>();
-        /*if (gameDataScript != null)
+        GameDataScript gameDataScript = GameObject.Find("GameDataObject").GetComponent<GameDataScript>();
+        if (gameDataScript != null)
         {
             fileName = gameDataScript.fileName;
         }
         else
-            fileName = "AssessmentChunk1.xml";*/
+            fileName = "AssessmentChunk1.xml";
 
         // Get terrainArray from XML file
         terrainArray = XMLVoxelFileWriter.LoadChunkFromXMLFile(chunkSize, fileName);
